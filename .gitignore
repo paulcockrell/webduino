@@ -1,0 +1,60 @@
+# === Clojure & Lein/Boot ===
+/.cpcache/
+/target/
+/pom.xml
+/classes/
+/.clj-kondo/
+
+# === ClojureScript build outputs ===
+/out/
+/public/js/
+/resources/public/js/
+/resources/public/cljs-out/
+/resources/public/js/main.js
+/resources/public/js/main.js.map
+
+# === Shadow CLJS ===
+/.shadow-cljs/
+/shadow-cljs.edn~
+
+# === Node ===
+/node_modules/
+/package-lock.json
+/yarn.lock
+
+# === Editor / IDE junk ===
+*.iml
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# === REPL history ===
+.repl-history
+.nrepl-port
+
+# === Build tools ===
+/dist/
+/build/
+/tmp/
+/.cljs_rhino_repl/
+.DS_Store
+
+# === Log & config artifacts ===
+/logback.xml
+/logs/
+*.log
+
+# === Docker artifacts ===
+*.docker
+*.tar
+docker-compose.override.yml
+
+# === Environment files ===
+.env
+.env.*
+
+# === VS Code Clojure extensions ===
+.calva/
+

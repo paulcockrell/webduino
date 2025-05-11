@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - .:/app
+    command: >
+      sh -c "clojure -M -m myapp.core & clojure -M:dev"
+    environment:
+      - JAVA_TOOL_OPTIONS=-Dclojure.server.repl="{:port 5555 :accept clojure.core.server/repl}"

@@ -1,0 +1,23 @@
+
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        ring/ring-core {:mvn/version "1.11.0"}
+        ring/ring-jetty-adapter {:mvn/version "1.11.0"}
+        ring/ring-defaults {:mvn/version "0.3.4"}
+        compojure/compojure {:mvn/version "1.7.0"}
+        hiccup/hiccup {:mvn/version "1.0.5"}
+        cheshire/cheshire {:mvn/version "5.11.0"}
+        mount/mount {:mvn/version "0.1.17"}
+        buddy/buddy-auth {:mvn/version "3.0.1"}
+        buddy/buddy-hashers {:mvn/version "2.0.167"}
+        ch.qos.logback/logback-classic {:mvn/version "1.4.11"}
+        reagent/reagent {:mvn/version "1.2.0"}}
+
+ :aliases
+ {:repl {:extra-deps {nrepl/nrepl {:mvn/version "1.1.0"}
+                      cider/cider-nrepl {:mvn/version "0.45.0"}}
+         :main-opts ["-m" "nrepl.cmdline"
+                     "--middleware" "[cider.nrepl/cider-middleware]"]}
+
+  :dev {:extra-deps {thheller/shadow-cljs {:mvn/version "2.26.2"}}
+        :main-opts ["-m" "shadow.cljs.devtools.cli" "watch" "app"]}}}
