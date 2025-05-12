@@ -1,14 +1,22 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  app:
+  backend:
     build: .
     ports:
-      - "3000:3000"
-      - "3001:3001"
+      - "3000:3000" # backend
     volumes:
       - .:/app
+    working_dir: /app
     command: >
-      sh -c "clojure -M -m myapp.core & clojure -M:dev"
-    environment:
-      - JAVA_TOOL_OPTIONS=-Dclojure.server.repl="{:port 5555 :accept clojure.core.server/repl}"
+      sh -c "clojure -M -m myapp.core"
+  frontend:
+    build: .
+    ports:
+      - "3001:3001" # shadow-cljs dev server
+      - "9630:9630" # nREPL (optional)
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      sh -c "clojure -M:dev"

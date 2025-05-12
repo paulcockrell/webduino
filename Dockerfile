@@ -1,28 +1,21 @@
-FROM node:20-bullseye AS node-build
+FROM timbru31/java-node:latest
+
+# Install Clojure CLI
+RUN curl -O https://download.clojure.org/install/linux-install-1.11.1.1413.sh && \
+    chmod +x linux-install-1.11.1.1413.sh && \
+    ./linux-install-1.11.1.1413.sh && \
+    rm linux-install-1.11.1.1413.sh
+
 WORKDIR /app
 
-# Copy package.json and install NPM dependencies
-COPY package.json ./
+# Install frontend deps
+COPY package.json shadow-cljs.edn ./
 RUN npm install
 
-# Copy the rest of the app for full build
+# Copy the rest of the app
 COPY . .
 
-# Build ClojureScript assets using Shadow CLJS
-RUN npx shadow-cljs release app
+EXPOSE 3000 3001 9630
 
-# --- Runtime image with JVM ---
-FROM clojure:temurin-21-tools-deps
-WORKDIR /app
+CMD ["sh", "-c", "clojure -M -m myapp.core & clojure -M:dev"]
 
-# Install Shadow CLJS globally
-RUN npm install -g shadow-cljs
-
-# Copy everything from node build
-COPY --from=node-build /app /app
-
-# Install Clojure dependencies
-RUN clojure -P
-
-# Run the app server
-CMD ["clojure", "-M", "-m", "myapp.core"]
