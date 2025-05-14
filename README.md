@@ -1,5 +1,9 @@
 # Clojure / Arduino / Firmata / ClojureScript Spa
 
+## References
+
+https://github.com/DavidVujic/sente-with-reagent-and-re-frame/tree/master
+
 ## Dev
 
 ```bash

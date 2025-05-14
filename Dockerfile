@@ -17,5 +17,5 @@ COPY . .
 
 EXPOSE 3000 3001 9630
 
-CMD ["sh", "-c", "clojure -M -m myapp.core & clojure -M:dev"]
+CMD ["sh", "-c", "clojure -M -m myapp.backend.core & clojure -M:dev"]
 
