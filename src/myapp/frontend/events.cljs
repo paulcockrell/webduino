@@ -22,3 +22,8 @@
  (fn [_ _]
    (client/start!)
    {:dispatch [:app/connected true]}))
+
+(rf/reg-event-fx
+ :app/flash
+ (fn [_ _]
+   (client/send! :arduino/blink {:led-pin 2 :duration 1000})))

@@ -14,6 +14,10 @@
   [{:keys [event]}]
   (log "Unhandled event:" event))
 
+(defmethod -event-msg-handler :some/broadcast
+  [{:keys [?data]}]
+  (log "Yo yo yo!!" ?data))
+
 (defmethod -event-msg-handler :chsk/recv
   [{:keys [?data]}]
   (rf/dispatch [:app/increase])

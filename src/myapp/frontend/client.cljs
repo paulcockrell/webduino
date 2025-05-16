@@ -19,6 +19,10 @@
   (when-let [el (.getElementById js/document "csrf-token")]
     (.getAttribute el "data-token")))
 
+(defn send! [key payload]
+  (when-let [send-fn @chsk-send!]
+    (send-fn [key payload])))
+
 (defn create-client! []
   (let [{:keys [ch-recv send-fn state]} (sente/make-channel-socket-client! "/chsk" ?csrf-token config)]
     (reset! ch-chsk ch-recv)

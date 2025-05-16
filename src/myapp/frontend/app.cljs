@@ -12,11 +12,17 @@
            :disabled @(rf/subscribe [:app/connected])
            :on-click #(rf/dispatch [:app/connect])}])
 
+(defn flash-led-button []
+  [:input {:type     :button
+           :value    "Flash LED"
+           :on-click #(rf/dispatch [:app/flash])}])
+
 (defn app []
   (let [push-count (or @(rf/subscribe [:app/push-count]) 0)]
     [:div
      [:p (str "Push count: " push-count)]
      [connect-button]
+     [flash-led-button]
      [:p "(push data is logged to the console)"]]))
 
 (defn init []
