@@ -25,6 +25,7 @@
 # === Editor / IDE junk ===
 *.iml
 .idea/
+.lsp/
 .vscode/
 *.swp
 *.swo
