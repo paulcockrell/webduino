@@ -1,5 +1,6 @@
 (ns myapp.backend.handlers
-  (:require [myapp.backend.arduino :as arduino]))
+  (:require [myapp.backend.arduino :as arduino]
+            [myapp.backend.socket :as socket]))
 
 (defmulti -event-msg-handler :id)
 
@@ -11,6 +12,11 @@
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (when-let [{:keys [led-pin duration]} ?data]
     (arduino/blink! led-pin duration)))
+
+(defmethod -event-msg-handler :arduino/get-firmware
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (let [info (arduino/firmware)]
+    (socket/broadcast! {:key :arduino/send-firmware :message info})))
 
 (defmethod -event-msg-handler :default
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]

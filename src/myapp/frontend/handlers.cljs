@@ -14,9 +14,13 @@
   [{:keys [event]}]
   (log "Unhandled event:" event))
 
+(defmethod -event-msg-handler :arduino/send-firmware
+  [{:keys [?data]}]
+  (rf/dispatch [:arduino/firmware ?data]))
+
 (defmethod -event-msg-handler :some/broadcast
   [{:keys [?data]}]
-  (log "Yo yo yo!!" ?data))
+  (log ":some/broadcast " ?data))
 
 (defmethod -event-msg-handler :chsk/recv
   [{:keys [?data]}]

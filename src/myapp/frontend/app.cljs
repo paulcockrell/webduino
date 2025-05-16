@@ -15,15 +15,26 @@
 (defn flash-led-button []
   [:input {:type     :button
            :value    "Flash LED"
+           :disabled (= false @(rf/subscribe [:app/connected]))
            :on-click #(rf/dispatch [:app/flash])}])
 
+(defn arudino-firmware []
+  [:input {:type     :button
+           :value    "Request firmware details"
+           :disabled (= false @(rf/subscribe [:app/connected]))
+           :on-click #(rf/dispatch [:arduino/get-firmware])}])
+
+(defn firmware-box []
+  (let [firmware (or @(rf/subscribe [:arduino/firmware]) "Unknown")]
+    [:p {:id "firmware"} firmware]))
+
 (defn app []
-  (let [push-count (or @(rf/subscribe [:app/push-count]) 0)]
-    [:div
-     [:p (str "Push count: " push-count)]
-     [connect-button]
-     [flash-led-button]
-     [:p "(push data is logged to the console)"]]))
+  [:div
+   [connect-button]
+   [flash-led-button]
+   [arudino-firmware]
+   [firmware-box]
+   [:p "(push data is logged to the console)"]])
 
 (defn init []
   (.log js/console "🚀 Initializing app")

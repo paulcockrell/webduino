@@ -30,13 +30,16 @@
     (fm/set-digital @arduino-board_ led-pin :low)
     nil))
 
-(defn get-firmware-info
-  [board]
-  (let [ch    (fm/event-channel board)
-        _     (fm/query-firmware board)
-        event (async/<!! ch)]
-    (prn event)
-    (fm/release-event-channel board ch)))
+(defn firmware
+  "Get the firmware details from the board"
+  []
+  (when @arduino-board_
+    (let [ch    (fm/event-channel @arduino-board_)
+          _     (fm/query-firmware @arduino-board_)
+          event (async/<!! ch)]
+      (fm/release-event-channel @arduino-board_ ch)
+      (println event)
+      event)))
 
 (defn enable-digital-pin-reporting
   "Enable a pin to report events"

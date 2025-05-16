@@ -31,3 +31,13 @@
       (<! (async/timeout 10000))
       (broadcast! i)
       (recur (inc i)))))
+
+(defn broadcast!
+  "General purpose broadcast to all connections"
+  [{:keys [key message]}]
+  (let [uids (:any @connected-uids)]
+    (doseq [uid uids]
+      (println "Broadcasting to user " uid " key " key " message " message)
+      (chsk-send! uid
+                  [key message]))))
+

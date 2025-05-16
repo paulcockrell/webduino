@@ -2,9 +2,9 @@
   (:require [re-frame.core :as rf]))
 
 (rf/reg-sub
- :app/push-count
+ :arduino/firmware
  (fn [db _]
-   (get-in db [:example :push])))
+   (get-in db [:arduino :firmware])))
 
 (rf/reg-sub
  :app/connected
