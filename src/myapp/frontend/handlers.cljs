@@ -22,11 +22,6 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/button-event ?data]))
 
-(defmethod -event-msg-handler :some/broadcast
-  [{:keys [?data]}]
-  (log ":some/broadcast " ?data))
-
-(defmethod -event-msg-handler :chsk/recv
-  [{:keys [?data]}]
-  (rf/dispatch [:app/increase])
-  (log "Push event from server:" ?data))
+(defmethod -event-msg-handler :chsk/handshake
+  [_]
+  (rf/dispatch [:arduino/connection :open]))

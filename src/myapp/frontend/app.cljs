@@ -4,25 +4,26 @@
    [re-frame.core :as rf]
    [myapp.frontend.events]
    [myapp.frontend.subscriptions]
-   [myapp.frontend.client]))
+   [myapp.frontend.client]
+   [myapp.frontend.components.header :as header]))
 
 (defn connect-button []
-  [:input {:type     :button
-           :value    "Connect"
-           :disabled @(rf/subscribe [:app/connected])
-           :on-click #(rf/dispatch [:app/connect])}])
+  ;; app/connection can be either open closed connecting
+  (let [status @(rf/subscribe [:arduino/connection])]
+    [:button {:aria-busy (= :opening status)
+              :disabled (= :opening status)
+              :on-click (when (= :closed status)
+                          #(rf/dispatch [:arduino/connect]))} (if (= :open status) "Disconnect" "Connect")]))
 
 (defn flash-led-button []
-  [:input {:type     :button
-           :value    "Flash LED"
-           :disabled (= false @(rf/subscribe [:app/connected]))
-           :on-click #(rf/dispatch [:app/flash])}])
+  (let [status @(rf/subscribe [:arduino/connection])]
+    [:button {:disabled (not= :open status)
+              :on-click #(rf/dispatch [:arduino/flash])} "Flash LED"]))
 
 (defn arudino-firmware []
-  [:input {:type     :button
-           :value    "Request firmware details"
-           :disabled (= false @(rf/subscribe [:app/connected]))
-           :on-click #(rf/dispatch [:arduino/get-firmware])}])
+  (let [status @(rf/subscribe [:arduino/connection])]
+    [:button {:disabled (not= :open status)
+              :on-click #(rf/dispatch [:arduino/get-firmware])} "Request firmware details"]))
 
 (defn firmware-box []
   (let [firmware (or @(rf/subscribe [:arduino/firmware]) "Unknown")]
@@ -34,12 +35,16 @@
      [:p {:id "button-press-event"} "Button press: " (:value button)]]))
 
 (defn app []
-  [:div
-   [connect-button]
-   [flash-led-button]
-   [arudino-firmware]
-   [firmware-box]
-   [button-event-box]])
+  [:<>
+   [header/header]
+   [:header.container
+    [:div {:role :group}
+     [connect-button]
+     [flash-led-button]
+     [arudino-firmware]]]
+   [:main.container
+    [firmware-box]
+    [button-event-box]]])
 
 (defn init []
   (.log js/console "🚀 Initializing app")

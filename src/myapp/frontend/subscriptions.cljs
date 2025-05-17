@@ -12,6 +12,6 @@
    (get-in db [:arduino :button])))
 
 (rf/reg-sub
- :app/connected
+ :arduino/connection
  (fn [db _]
-   (true? (get-in db [:example :connected]))))
+   (get-in db [:arduino :connection]))) ;; can be either :open :opening :closed :error

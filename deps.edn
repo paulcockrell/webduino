@@ -1,5 +1,6 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+ :deps {;; web server
+        org.clojure/clojure {:mvn/version "1.11.1"}
         ring/ring-core {:mvn/version "1.11.0"}
         ring/ring {:mvn/version "1.8.1"}
         ring-cors/ring-cors {:mvn/version "0.1.13"}
@@ -12,10 +13,15 @@
         reagent/reagent {:mvn/version "1.2.0"}
         re-frame/re-frame {:mvn/version "1.0.0"}
 
+        ;; arduino and support libs
         com.github.purejavacomm/purejavacomm {:mvn/version "1.0.4"}
         clj-serial {:mvn/version "2.0.5" :exclusions [com.github.purejavacomm/purejavacomm]}
         org.clojure/core.async {:mvn/version "1.6.681"}
-        clj-firmata {:mvn/version "2.1.1" :exclusions [clj-serial org.clojure/core.async]}}
+        clj-firmata {:mvn/version "2.1.1" :exclusions [clj-serial org.clojure/core.async]}
+
+        ;; logging
+        org.slf4j/slf4j-api {:mvn/version "2.0.9"}
+        ch.qos.logback/logback-classic {:mvn/version "1.4.11"}}
 
  :aliases
  {:repl {:extra-deps {nrepl/nrepl {:mvn/version "1.1.0"}

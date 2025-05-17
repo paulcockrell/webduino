@@ -5,26 +5,22 @@
 (rf/reg-event-db
  :app/init
  (fn [_ _]
-   {:example {}}))
+    ;; arduino/connection can be either open opening closed
+   {:arduino {:connection :closed}}))
 
 (rf/reg-event-db
- :app/connected
+ :arduino/connection
  (fn [db [_ value]]
-   (assoc-in db [:example :connected] value)))
-
-(rf/reg-event-db
- :app/increase
- (fn [db _]
-   (update-in db [:example :push] inc)))
+   (assoc-in db [:arduino :connection] value)))
 
 (rf/reg-event-fx
- :app/connect
+ :arduino/connect
  (fn [_ _]
    (client/start!)
-   {:dispatch [:app/connected true]}))
+   {:dispatch [:arduino/connection :opening]}))
 
 (rf/reg-event-fx
- :app/flash
+ :arduino/flash
  (fn [_ _]
    (client/send! :arduino/blink {:led-pin 2 :duration 1000})
    {}))
@@ -70,3 +66,4 @@
  (fn [db [_ [_ raw-msg]]]
    (let [msg (js->clj raw-msg :keywordize-keys true)]
      (assoc-in db [:arduino :button] msg))))
+
