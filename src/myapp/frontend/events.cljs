@@ -64,6 +64,22 @@
 (rf/reg-event-db
  :arduino/button
  (fn [db [_ [_ raw-msg]]]
+   (let [msg (js->clj raw-msg :keywordize-keys true)
+         {:keys [message]} msg]
+     (assoc-in db [:arduino :button] message))))
+
+;;---------- led callbacks
+
+;; 1. - Receive message from server
+(rf/reg-event-fx
+ :arduino/led-event
+ (fn [_ value]
+   {:dispatch [:arduino/led value]}))
+
+;; 2. - Update DB
+(rf/reg-event-db
+ :arduino/led
+ (fn [db [_ [_ raw-msg]]]
    (let [msg (js->clj raw-msg :keywordize-keys true)]
-     (assoc-in db [:arduino :button] msg))))
+     (assoc-in db [:arduino :led] msg))))
 

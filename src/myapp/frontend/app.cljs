@@ -16,8 +16,10 @@
                           #(rf/dispatch [:arduino/connect]))} (if (= :open status) "Disconnect" "Connect")]))
 
 (defn flash-led-button []
-  (let [status @(rf/subscribe [:arduino/connection])]
+  (let [status @(rf/subscribe [:arduino/connection])
+        led @(rf/subscribe [:arduino/led])]
     [:button {:disabled (not= :open status)
+              :aria-busy (= :high (:state led))
               :on-click #(rf/dispatch [:arduino/flash])} "Flash LED"]))
 
 (defn arudino-firmware []
@@ -26,11 +28,11 @@
               :on-click #(rf/dispatch [:arduino/get-firmware])} "Request firmware details"]))
 
 (defn firmware-box []
-  (let [firmware (or @(rf/subscribe [:arduino/firmware]) "Unknown")]
+  (let [firmware @(rf/subscribe [:arduino/firmware])]
     [:p {:id "firmware"} "Firmware: " firmware]))
 
 (defn button-event-box []
-  (let [button (or @(rf/subscribe [:arduino/button]) "Unknown")]
+  (let [button  @(rf/subscribe [:arduino/button])]
     [:div
      [:p {:id "button-press-event"} "Button press: " (:value button)]]))
 

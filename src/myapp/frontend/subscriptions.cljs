@@ -12,6 +12,11 @@
    (get-in db [:arduino :button])))
 
 (rf/reg-sub
+ :arduino/led
+ (fn [db _]
+   (get-in db [:arduino :led])))
+
+(rf/reg-sub
  :arduino/connection
  (fn [db _]
    (get-in db [:arduino :connection]))) ;; can be either :open :opening :closed :error

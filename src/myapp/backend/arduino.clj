@@ -2,6 +2,7 @@
   (:require [firmata.core :as fm]
             [firmata.receiver :as fmr]
             [clojure.core.async :as async]
+            [myapp.backend.arduino.events :as events]
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
@@ -38,9 +39,11 @@
   "Blink LED on pin X for Y milliseconds"
   [led-pin duration]
   (when @arduino-board_
+    (events/broadcast-led-event led-pin :high)
     (fm/set-digital @arduino-board_ led-pin :high)
     (Thread/sleep duration)
     (fm/set-digital @arduino-board_ led-pin :low)
+    (events/broadcast-led-event led-pin :low)
     nil))
 
 (defn firmware
@@ -51,7 +54,6 @@
           _     (fm/query-firmware @arduino-board_)
           event (async/<!! ch)]
       (fm/release-event-channel @arduino-board_ ch)
-      (println event)
       event)))
 
 (defn enable-digital-pin-reporting
@@ -78,3 +80,17 @@
   "Register pin as an output"
   [board led-pin]
   (fm/set-pin-mode board led-pin :output))
+
+(defn start-myapp-broadcaster!
+  "As an example of server>user async pushes, setup a loop to broadcast an
+  event to all connected users every 10 seconds"
+  []
+  (let [btn-pin 4]
+    (register-handler!
+     :button-broadcast
+     (fn [_board]
+       (register-button btn-pin) ;; register a button on pin 4
+       (register-event btn-pin   ;; register an event listener on pin 4
+                       (fn [event]
+                         (println "Button press event" event)
+                         (events/broadcast-button-event {:key :arduino/button-event :message event})))))))

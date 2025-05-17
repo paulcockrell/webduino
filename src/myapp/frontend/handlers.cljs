@@ -22,6 +22,10 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/button-event ?data]))
 
+(defmethod -event-msg-handler :arduino/led-event
+  [{:keys [?data]}]
+  (rf/dispatch [:arduino/led-event ?data]))
+
 (defmethod -event-msg-handler :chsk/handshake
   [_]
   (rf/dispatch [:arduino/connection :open]))
