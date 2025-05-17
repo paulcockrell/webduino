@@ -18,6 +18,10 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/firmware ?data]))
 
+(defmethod -event-msg-handler :arduino/button-event
+  [{:keys [?data]}]
+  (rf/dispatch [:arduino/button-event ?data]))
+
 (defmethod -event-msg-handler :some/broadcast
   [{:keys [?data]}]
   (log ":some/broadcast " ?data))

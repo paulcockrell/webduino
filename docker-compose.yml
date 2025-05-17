@@ -10,7 +10,7 @@ services:
     working_dir: /app
     environment:
       # On host run: socat -d -d TCP-LISTEN:54321,reuseaddr,fork FILE:/dev/tty.usbserial-110,raw
-      ARDUINO_PORT: socket://host.docker.internal:54321
+      # SERIAL_PORT: socket://host.docker.internal:54321
     tty: true
     stdin_open: true
     command: /app/start.sh

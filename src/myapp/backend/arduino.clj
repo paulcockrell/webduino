@@ -5,6 +5,7 @@
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
+(defonce deferred-registrations (atom {}))
 
 (defn stop!
   "Close the connection to Arduino if open"
@@ -19,7 +20,19 @@
    (stop!)
    (let [board (fm/open-serial-board port)]
      (println "Connected to Arduino on port " port)
-     (reset! arduino-board_ board))))
+     (reset! arduino-board_ board)
+     ;; Replay deferred registrations
+     (doseq [f @deferred-registrations]
+       (f board))
+     board)))
+
+(defn register-handler!
+  "Register a deferred handler (a callback function) to apply once the board is available."
+  [id cb]
+  (swap! deferred-registrations assoc id cb)
+  ;; If board is already connected, run it immediately
+  (when @arduino-board_
+    (cb @arduino-board_)))
 
 (defn blink!
   "Blink LED on pin X for Y milliseconds"
@@ -49,16 +62,17 @@
 
 (defn register-button
   "Register a pin as an input and enable digital reporting on it"
-  [board btn-pin]
-
-  (-> board
-      (fm/set-pin-mode btn-pin :input)
-      (enable-digital-pin-reporting btn-pin)))
+  [btn-pin]
+  (when @arduino-board_
+    (-> @arduino-board_
+        (fm/set-pin-mode btn-pin :input)
+        (enable-digital-pin-reporting btn-pin))))
 
 (defn register-event
   "Register a callback for events on a given pin"
-  [board btn-pin callback]
-  (fmr/on-digital-event board btn-pin callback))
+  [btn-pin callback]
+  (when @arduino-board_
+    (fmr/on-digital-event @arduino-board_ btn-pin callback)))
 
 (defn register-led
   "Register pin as an output"

@@ -7,6 +7,11 @@
    (get-in db [:arduino :firmware])))
 
 (rf/reg-sub
+ :arduino/button
+ (fn [db _]
+   (get-in db [:arduino :button])))
+
+(rf/reg-sub
  :app/connected
  (fn [db _]
    (true? (get-in db [:example :connected]))))

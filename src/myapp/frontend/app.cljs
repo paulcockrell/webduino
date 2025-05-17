@@ -26,7 +26,12 @@
 
 (defn firmware-box []
   (let [firmware (or @(rf/subscribe [:arduino/firmware]) "Unknown")]
-    [:p {:id "firmware"} firmware]))
+    [:p {:id "firmware"} "Firmware: " firmware]))
+
+(defn button-event-box []
+  (let [button (or @(rf/subscribe [:arduino/button]) "Unknown")]
+    [:div
+     [:p {:id "button-press-event"} "Button press: " (:value button)]]))
 
 (defn app []
   [:div
@@ -34,7 +39,7 @@
    [flash-led-button]
    [arudino-firmware]
    [firmware-box]
-   [:p "(push data is logged to the console)"]])
+   [button-event-box]])
 
 (defn init []
   (.log js/console "🚀 Initializing app")
