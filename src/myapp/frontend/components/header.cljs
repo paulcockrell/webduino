@@ -1,20 +1,20 @@
 (ns myapp.frontend.components.header
-  (:require
-   [reagent.dom :as rdom]
-   [re-frame.core :as rf]))
+  (:require [re-frame.core :as rf]))
 
-;;  just copy from here https://github.com/picocss/examples/blob/master/v2-html/index.html 
+(defn -connect-button []
+  ;; app/connection can be either open opening closed
+  (let [status @(rf/subscribe [:arduino/connection])]
+    [:button {:aria-busy (= :opening status)
+              :disabled (= :opening status)
+              :on-click (when (= :closed status)
+                          #(rf/dispatch [:arduino/connect]))} (if (= :open status) "Disconnect" "Connect")]))
+
 (defn header []
-  [:header.container
-   [:hgroup
-    [:h1 "WebDuino"]
-    [:p "Arduino communication from the web"]]
+  [:header.container-fluid
    [:nav
     [:ul
      [:li
-      [:details.dropdown
-       [:summary {:role "button" :class "secondary"} "Theme"]
-       [:ul
-        [:li [:a {:href "#" :data-theme-switcher "auto"} "Auto"]]
-        [:li [:a {:href "#" :data-theme-switcher "light"} "Light"]]
-        [:li [:a {:href "#" :data-theme-switcher "dark"} "Dark"]]]]]]]])
+      [:h3 "WebDuino"]]]
+    [:ul
+     [:li
+      [-connect-button]]]]])

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arduino Device Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding-bottom: 4rem; /* Reserve space for ribbon */
+      }
+
+      header {
+        nav ul li {
+          padding: 0 0.5em;
+        }
+      }
+
+      main {
+        padding: 2rem 1rem 5rem;
+      }
+
+      article {
+        h4 {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4em;
+        }
+      }
+
+      .alert {
+        font-size: var(--pico-font-size);
+        margin-bottom: var(--spacing);
+        padding: var(--pico-form-element-spacing-vertical)
+          var(--pico-form-element-spacing-horizontal);
+        border-radius: var(--pico-border-radius);
+        background-position: center left
+          var(--pico-form-element-spacing-vertical);
+        background-size: calc(var(--pico-form-element-spacing-vertical) * 1.5)
+          auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      #device-ribbon {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #f5f5f5; /* Light neutral background */
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-around;
+        padding: 0;
+        z-index: 1000;
+      }
+
+      #device-ribbon button {
+        flex-grow: 1;
+        border: none;
+        border-radius: 0;
+        background: none;
+        padding: 0.5rem 0;
+        text-align: center;
+        color: #333;
+      }
+
+      #device-ribbon button.active {
+        background-color: #e0e0e0;
+      }
+
+      .stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .ribbon-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1.2;
+      }
+
+      .ribbon-icon small {
+        font-size: 0.75rem;
+        color: #666; /* muted text */
+      }
+
+      .device-panel {
+        display: none;
+      }
+
+      .device-panel.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page template: https://www.behance.net/gallery/9080423/HEIMA-Smart-Home-Automation-UI# -->
+    <!-- Google font icons: https://fonts.google.com/icons?icon.size=24&icon.color=%231f1f1f&icon.set=Material+Symbols -->
+    <header class="container-fluid">
+      <nav>
+        <ul>
+          <li>
+            <h3>WebDuino</h3>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <button>Connect</button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="container">
+      <section class="alerts">
+        <div class="alert pico-background-red-50" role="alert">
+          <span class="material-symbols-outlined pico-color-red-500">
+            error
+          </span>
+          <span class="pico-color-red-500">Connection failed</span>
+        </div>
+        <div class="alert pico-background-amber-50" role="alert">
+          <span class="material-symbols-outlined pico-color-amber-500">
+            error
+          </span>
+          <span class="pico-color-amber-500">Connection rejected</span>
+        </div>
+        <div class="alert pico-background-jade-50" role="alert">
+          <span class="material-symbols-outlined pico-color-green-500">
+            check_circle
+          </span>
+          <span class="pico-color-green-500">Connection success</span>
+        </div>
+      </section>
+
+      <section class="home-sensors">
+        <div class="grid">
+          <article id="temperature">
+            <h4>
+              <span class="material-symbols-outlined">device_thermostat</span>
+              Temperature sensor
+            </h4>
+            <p>Current temperature: 23 °C</p>
+            <footer>
+              <progress id="progress-1" value="25" max="100"></progress>
+            </footer>
+          </article>
+
+          <article id="panel-led">
+            <h4>
+              <span class="material-symbols-outlined">lightbulb</span>
+              LED Control
+            </h4>
+            <fieldset>
+              <label for="led-1">
+                <input
+                  type="checkbox"
+                  id="led-1"
+                  name="led-1"
+                  role="switch"
+                  checked=""
+                />
+                Toggle LED 1
+              </label>
+            </fieldset>
+          </article>
+        </div>
+
+        <div class="grid">
+          <article id="panel-fan">
+            <h4>
+              <span class="material-symbols-outlined">mode_fan</span>
+              Fan Speed
+            </h4>
+            <label>
+              <input type="range" min="0" max="255" id="fan-speed" /> Speed
+              Control
+            </label>
+          </article>
+
+          <article id="panel-button">
+            <h4>
+              <span class="material-symbols-outlined">
+                radio_button_checked
+              </span>
+              Button Sensor
+            </h4>
+            <p>Button State: <strong id="button-state">ON</strong></p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container-fluid">
+      <nav id="device-ribbon">
+        <button data-target="panel-home" class="active primary-outline">
+          <div class="stack">
+            <span class="material-symbols-outlined">home</span>
+            <small>Home</small>
+          </div>
+        </button>
+        <button data-target="panel-temp" class="primary-outline">
+          <div class="stack">
+            <span class="material-symbols-outlined">device_thermostat</span>
+            <small>Temperature</small>
+          </div>
+        </button>
+        <button data-target="panel-led" class="primary-outline">
+          <div class="stack">
+            <span class="material-symbols-outlined">lightbulb</span>
+            <small>LED</small>
+          </div>
+        </button>
+        <button data-target="panel-fan">
+          <div class="stack">
+            <span class="material-symbols-outlined">mode_fan</span>
+            <small>Fan</small>
+          </div>
+        </button>
+        <button data-target="panel-button">
+          <div class="stack">
+            <span class="material-symbols-outlined">radio_button_checked</span>
+            <small>Button</small>
+          </div>
+        </button>
+      </nav>
+    </footer>
+  </body>
+</html>

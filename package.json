@@ -2,6 +2,7 @@
   "name": "secure-clj-web",
   "version": "1.0.0",
   "dependencies": {
+    "@material-symbols/svg-400": "^0.31.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "shadow-cljs": "^2.26.2"

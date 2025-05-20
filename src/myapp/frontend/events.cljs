@@ -5,19 +5,37 @@
 (rf/reg-event-db
  :app/init
  (fn [_ _]
-    ;; arduino/connection can be either open opening closed
-   {:arduino {:connection :closed}}))
+   {:app {:alert nil} ;; any alert type, success/warning/error
+    :arduino {:connection :closed ;; arduino/connection can be either open opening closed
+              :timeout-id nil ;; arduino connection timeout 
+              }}))
+
+(rf/reg-event-db
+ :app/alert-clear
+ (fn [db [_ value]]
+   (assoc-in db [:app :alert] nil)))
 
 (rf/reg-event-db
  :arduino/connection
  (fn [db [_ value]]
    (assoc-in db [:arduino :connection] value)))
 
+(rf/reg-event-db
+ :arduino/connection-timeout
+ (fn [db _]
+   (if (= :opening (get-in db [:arduino :connection]))
+     (-> db
+         (assoc-in [:arduino :connection] :closed)
+         (assoc-in [:app :alert] "Connection timeout"))
+     db)))
+
 (rf/reg-event-fx
  :arduino/connect
  (fn [_ _]
    (client/start!)
-   {:dispatch [:arduino/connection :opening]}))
+   {:dispatch-n [[:arduino/connection :opening]
+                 [:app/alert-clear]]
+    :dispatch-later [{:ms 2000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
  :arduino/flash

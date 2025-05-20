@@ -5,7 +5,7 @@
    [myapp.frontend.events]
    [myapp.frontend.subscriptions]
    [myapp.frontend.client]
-   [myapp.frontend.components.header :as header]))
+   [myapp.frontend.components.layout :as layout]))
 
 (defn connect-button []
   ;; app/connection can be either open closed connecting
@@ -36,7 +36,8 @@
     [:div
      [:p {:id "button-press-event"} "Button press: " (:value button)]]))
 
-(defn app []
+(defn old-app []
+
   [:<>
    [header/header]
    [:header.container
@@ -45,8 +46,13 @@
      [flash-led-button]
      [arudino-firmware]]]
    [:main.container
+    ;; find all icons here https://fonts.google.com/icons?icon.size=24&icon.color=%231f1f1f&icon.set=Material+Symbols
+    [:span.material-symbols-outlined "home"]
     [firmware-box]
     [button-event-box]]])
+
+(defn app []
+  [layout/layout [:h1 "Hello!"]])
 
 (defn init []
   (.log js/console "🚀 Initializing app")
