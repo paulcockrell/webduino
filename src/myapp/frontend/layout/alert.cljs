@@ -1,4 +1,4 @@
-(ns myapp.frontend.components.alert)
+(ns myapp.frontend.layout.alert)
 
 (defn alert-error [message]
   [:div.alert.pico-background-red-50 {:role "alert"}

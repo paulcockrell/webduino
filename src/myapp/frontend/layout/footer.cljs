@@ -1,4 +1,4 @@
-(ns myapp.frontend.components.footer)
+(ns myapp.frontend.layout.footer)
 
 (defn footer []
   [:footer {:class "container-fluid"}

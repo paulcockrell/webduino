@@ -1,4 +1,4 @@
-(ns myapp.frontend.components.header
+(ns myapp.frontend.layout.header
   (:require [re-frame.core :as rf]))
 
 (defn -connect-button []

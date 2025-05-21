@@ -5,7 +5,8 @@
    [myapp.frontend.events]
    [myapp.frontend.subscriptions]
    [myapp.frontend.client]
-   [myapp.frontend.components.layout :as layout]))
+   [myapp.frontend.layout.layout :as layout]
+   [myapp.frontend.dashboard.dashboard :as dashboard]))
 
 (defn connect-button []
   ;; app/connection can be either open closed connecting
@@ -52,7 +53,8 @@
     [button-event-box]]])
 
 (defn app []
-  [layout/layout [:h1 "Hello!"]])
+  [layout/layout
+   [dashboard/dashboard]])
 
 (defn init []
   (.log js/console "🚀 Initializing app")
