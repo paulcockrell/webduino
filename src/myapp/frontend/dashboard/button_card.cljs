@@ -5,7 +5,7 @@
    [:h4
     [:span.material-symbols-outlined
      "radio_button_checked"]
-    "Button Sensor"]
-   [:p "Button state:"
+    "Button"]
+   [:p "Button state: "
     [:strong {:id "button-state"} "On"]]])
 

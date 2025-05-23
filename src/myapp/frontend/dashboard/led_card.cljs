@@ -5,13 +5,7 @@
    [:h4
     [:span.material-symbols-outlined
      "lightbulb"]
-    "LED control"]
-   [:fieldset
-    [:label {:for "led-1"}
-     [:input {:type "checkbox"
-              :id "led-1"
-              :name "led-1"
-              :role "switch"
-              :checked ""}]
-     "Toggle LED 1"]]])
+    "LED"]
+   [:p "LED state: "
+    [:strong {:id "button-state"} "On"]]])
 
