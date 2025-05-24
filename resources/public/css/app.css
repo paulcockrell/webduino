@@ -1,3 +1,22 @@
+:host(:not([data-theme="dark"])),
+:root:not([data-theme="dark"]),
+[data-theme="light"] {
+  --pico-background-color: #fff;
+  --pico-color: #373c44;
+  --pico-text-selection-color: rgba(247, 147, 26, 0.25);
+  --pico-muted-color: #646b79;
+  --pico-muted-border-color: rgb(231, 234, 239.5);
+  --pico-primary: #f7931a;
+  --pico-primary-background: var(--pico-primary);
+  --pico-primary-border: var(--pico-primary-background);
+  --pico-primary-underline: rgba(247, 147, 26, 0.5);
+  --pico-primary-hover: rgb(208.39, 117.39, 7.28);
+  --pico-primary-hover-background: rgb(248.68, 169.68, 74.09);
+  --pico-primary-hover-border: var(--pico-primary-hover-background);
+  --pico-primary-hover-underline: var(--pico-primary-hover);
+  --pico-primary-focus: rgba(247, 147, 26, 0.375);
+}
+
 body {
   margin: 0;
   padding-bottom: 4rem; /* Reserve space for ribbon */
@@ -18,7 +37,7 @@ header {
         margin: 0;
 
         span {
-          color: var(--pico-color-azure-300);
+          color: var(--pico-primary);
           margin-right: 0.25em;
         }
       }
@@ -28,6 +47,17 @@ header {
 
 main {
   padding: 2rem 1rem 5rem;
+
+  .heading-icon {
+    text-align: center;
+
+    span.material-symbols-outlined {
+      color: var(--pico-background-color);
+      font-size: calc(3 * var(--pico-font-size));
+      border-radius: 50%;
+      background-color: var(--pico-color-azure-300);
+    }
+  }
 }
 
 article {
@@ -37,7 +67,7 @@ article {
     gap: 0.4em;
 
     span.material-symbols-outlined {
-      color: var(--pico-color-azure-300);
+      color: var(--pico-primary-focus);
     }
   }
 }
@@ -61,9 +91,7 @@ article {
   left: 0;
   bottom: 0;
   width: 100%;
-  background: #f5f5f5;
-  background-color: var(--pico-primary-background);
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--pico-background-color);
   z-index: 1000;
   height: auto;
 
@@ -77,9 +105,11 @@ article {
     padding: 0.75rem;
     text-align: center;
     cursor: pointer;
+    color: var(--pico-color);
+    background-color: var(--pico-primary-background);
     &.active {
-      color: var(--pico-color);
-      background-color: var(--pico-color-azure-300);
+      color: var(--pico-primary-background);
+      background-color: var(--pico-primary-focus);
     }
   }
 
@@ -95,5 +125,13 @@ article {
     grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
     grid-auto-rows: 1fr;
     flex: 1;
+  }
+
+  datalist {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 1.25rem + 4px);
+    margin-top: -0.25rem;
+    margin-inline: auto;
   }
 }

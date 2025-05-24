@@ -53,7 +53,16 @@
 
 (defmethod pages :sensors-temperature []
   [layout/layout
-   [:div [:h1 "Sensors - Temperature"]]])
+   [:<>
+    [:div.heading-icon
+     [:span.material-symbols-outlined "device_thermostat"]]
+    [:div.grid
+     [:div
+      [:h3 "About temperature sensors"]
+      [:p "Lorum ipsum blah blah"]]
+     [:div
+      [:h3 "Interact"]
+      [:p "Buzz when temperature exceeds 20'c"]]]]])
 
 (defmethod pages :devices-button []
   [layout/layout
@@ -61,7 +70,25 @@
 
 (defmethod pages :devices-led []
   [layout/layout
-   [:div [:h1 "Devices - LED"]]])
+   [:<>
+    [:div [:h1 "Devices - LED"]]
+    [:fieldset
+     [:label {:for "priority"} "Network Priority"]
+     [:input {:id "priority"
+              :name "priority"
+              :type "range"
+              :list "priorities"
+              :min "1"
+              :max "5"
+              :step "1"
+              :default-value "3"
+              :style (js-obj "--pico-selected-ratio" "25%")}]
+     [:div {:style {:display "flex"
+                    :justifyContent "space-between"
+                    :marginTop "0.5rem"
+                    :fontSize "0.9rem"}}
+      (for [label ["Min" "Low" "Medium" "High" "Max"]]
+        [:span label])]]]])
 
 (defmethod pages :sensors-humidity []
   [layout/layout
