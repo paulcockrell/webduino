@@ -4,7 +4,7 @@
   [:article {:id "accelerometer"}
    [:h4
     [:span.material-symbols-outlined
-     "radio_button_checked"]
+     "network_node"]
     "3-axis accelerometer"]
    [:p "X: "
     [:strong "30"]

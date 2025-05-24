@@ -14,7 +14,10 @@
    [:nav
     [:ul
      [:li
-      [:h3 "WebDuino"]]]
+      [:h3
+       [:span.material-symbols-outlined.heading-icon
+        "memory"]
+       "Webduino"]]]
     [:ul
      [:li
       [-connect-button]]]]])
