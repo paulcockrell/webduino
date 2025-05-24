@@ -71,24 +71,27 @@
 (defmethod pages :devices-led []
   [layout/layout
    [:<>
-    [:div [:h1 "Devices - LED"]]
-    [:fieldset
-     [:label {:for "priority"} "Network Priority"]
-     [:input {:id "priority"
-              :name "priority"
-              :type "range"
-              :list "priorities"
-              :min "1"
-              :max "5"
-              :step "1"
-              :default-value "3"
-              :style (js-obj "--pico-selected-ratio" "25%")}]
-     [:div {:style {:display "flex"
-                    :justifyContent "space-between"
-                    :marginTop "0.5rem"
-                    :fontSize "0.9rem"}}
-      (for [label ["Min" "Low" "Medium" "High" "Max"]]
-        [:span label])]]]])
+    [:section
+     [:div.heading-icon
+      [:span.material-symbols-outlined "lightbulb"]]]
+    [:section
+     [:fieldset
+      [:label {:for "priority"} "Brightness"]
+      [:input {:id "priority"
+               :name "priority"
+               :type "range"
+               :list "priorities"
+               :min "1"
+               :max "5"
+               :step "1"
+               :default-value "3"
+               :style (js-obj "--pico-selected-ratio" "25%")}]
+      [:div {:style {:display "flex"
+                     :justifyContent "space-between"
+                     :marginTop "0.5rem"
+                     :fontSize "0.9rem"}}
+       (for [label ["Min" "Low" "Medium" "High" "Max"]]
+         [:span label])]]]]])
 
 (defmethod pages :sensors-humidity []
   [layout/layout

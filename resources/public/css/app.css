@@ -10,16 +10,20 @@
   --pico-primary-background: var(--pico-primary);
   --pico-primary-border: var(--pico-primary-background);
   --pico-primary-underline: rgba(247, 147, 26, 0.5);
-  --pico-primary-hover: rgb(208.39, 117.39, 7.28);
+  --pico-primary-hover: #fcd6a8;
   --pico-primary-hover-background: rgb(248.68, 169.68, 74.09);
   --pico-primary-hover-border: var(--pico-primary-hover-background);
   --pico-primary-hover-underline: var(--pico-primary-hover);
-  --pico-primary-focus: rgba(247, 147, 26, 0.375);
+  --pico-primary-focus: #fcd6a8;
 }
 
 body {
   margin: 0;
   padding-bottom: 4rem; /* Reserve space for ribbon */
+}
+
+hr {
+  border-top: 1px solid var(--pico-primary-focus);
 }
 
 header {
@@ -55,7 +59,8 @@ main {
       color: var(--pico-background-color);
       font-size: calc(3 * var(--pico-font-size));
       border-radius: 50%;
-      background-color: var(--pico-color-azure-300);
+      padding: 1rem;
+      background-color: var(--pico-primary);
     }
   }
 }
@@ -94,6 +99,7 @@ article {
   border-top: 1px solid var(--pico-background-color);
   z-index: 1000;
   height: auto;
+  background: var(--pico-primary);
 
   button {
     all: unset;
@@ -118,6 +124,12 @@ article {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    &:has(button.active) {
+      background-color: var(--pico-primary-focus);
+    }
+    button {
+      height: 100%;
+    }
   }
 
   .ribbon-buttons {
