@@ -6,6 +6,7 @@
  :app/init
  (fn [_ _]
    {:app {:alert nil} ;; any alert type, success/warning/error
+    :current-page :home
     :arduino {:connection :closed ;; arduino/connection can be either open opening closed
               :timeout-id nil ;; arduino connection timeout 
               }}))
@@ -35,7 +36,7 @@
    (client/start!)
    {:dispatch-n [[:arduino/connection :opening]
                  [:app/alert-clear]]
-    :dispatch-later [{:ms 2000 :dispatch [:arduino/connection-timeout]}]}))
+    :dispatch-later [{:ms 5000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
  :arduino/flash
@@ -101,3 +102,9 @@
    (let [msg (js->clj raw-msg :keywordize-keys true)]
      (assoc-in db [:arduino :led] msg))))
 
+;;------ navigation
+
+(rf/reg-event-db
+ :navigate
+ (fn [db [_ route]]
+   (assoc db :current-page route)))

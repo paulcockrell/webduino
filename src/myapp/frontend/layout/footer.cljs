@@ -1,39 +1,33 @@
-(ns myapp.frontend.layout.footer)
+(ns myapp.frontend.layout.footer
+  (:require [reitit.frontend.easy :as rfe]
+            [re-frame.core :as rf]))
+
+(defn nav-button [route tooltip icon-name]
+  (let [current @(rf/subscribe [:current-page])]
+    [:button
+     {:on-click #(rfe/push-state route)
+      :data-tooltip tooltip
+      :class (str "nav-button" (when (= current route) " active"))}
+     [:span.material-symbols-outlined icon-name]]))
 
 (defn footer []
   [:footer {:class "container-fluid"}
    [:nav {:id "device-ribbon"}
     [:div {:class "ribbon-home"}
-     [:button {:class "home active primary-outline" :data-tooltip "Home"}
-      [:span {:class "material-symbols-outlined"} "home"]]]
+     [nav-button :home "Home" "home"]]
     [:div {:class "ribbon-buttons"}
-     [:button {:data-tooltip "temperature"}
-      [:span {:class "material-symbols-outlined"} "device_thermostat"]]
-     [:button {:data-tooltip "Button"}
-      [:span {:class "material-symbols-outlined"} "radio_button_checked"]]
-     [:button {:data-tooltip "LED"}
-      [:span {:class "material-symbols-outlined"} "lightbulb"]]
-     [:button {:data-tooltip "humidity"}
-      [:span {:class "material-symbols-outlined"} "water_drop"]]
-     [:button {:data-tooltip "Relay"}
-      [:span {:class "material-symbols-outlined"} "tune"]]
-     [:button {:data-tooltip "Buzzer"}
-      [:span {:class "material-symbols-outlined"} "volume_up"]]
-     [:button {:data-tooltip "Servo"}
-      [:span {:class "material-symbols-outlined"} "mode_fan"]]
-     [:button {:data-tooltip "PIR sensor"}
-      [:span {:class "material-symbols-outlined"} "waving_hand"]]
-     [:button {:data-tooltip "3-axis accelerometer"}
-      [:span {:class "material-symbols-outlined"} "network_node"]]
-     [:button {:data-tooltip "Light sensor"}
-      [:span {:class "material-symbols-outlined"} "solar_power"]]
-     [:button {:data-tooltip "Inrared receiver"}
-      [:span {:class "material-symbols-outlined"} "infrared"]]
-     [:button {:data-tooltip "LCD display"}
-      [:span {:class "material-symbols-outlined"} "view_compact"]]
-     [:button {:data-tooltip "Linear potentiometer"}
-      [:span {:class "material-symbols-outlined"} "linear_scale"]]
-     [:button {:data-tooltip "Ultrasonic range sensor"}
-      [:span {:class "material-symbols-outlined"} "spatial_tracking"]]
-     [:button {:data-tooltip "Sound sensor"}
-      [:span {:class "material-symbols-outlined"} "hearing"]]]]])
+     [nav-button :sensors-temperature "temperature" "device_thermostat"]
+     [nav-button :devices-button "Button" "radio_button_checked"]
+     [nav-button :devices-led "LED" "lightbulb"]
+     [nav-button :sensors-humidity "Humidity" "water_drop"]
+     [nav-button :devices-relay "Relay" "tune"]
+     [nav-button :devices-buzzer "Buzzer" "volume_up"]
+     [nav-button :devices-servo "Servo" "mode_fan"]
+     [nav-button :sensors-pir "PIR sensor" "waving_hand"]
+     [nav-button :sensors-accelerometer "3-axix accelerometer" "network_node"]
+     [nav-button :sensors-light "Light sensor" "solar_power"]
+     [nav-button :sensors-infrared "Infrared receiver" "infrared"]
+     [nav-button :devices-lcd "LCD display" "view_compact"]
+     [nav-button :devices-potentiometer "Linear potentiometer" "linear_scale"]
+     [nav-button :sensors-ultrasonic "Ultrasonic range sensor" "spatial_tracking"]
+     [nav-button :sensors-sound "Sound sensor" "hearing"]]]])

@@ -6,17 +6,21 @@ body {
 header {
   border-bottom: 1px solid var(--pico-primary-background);
 
-  nav ul li {
-    padding: 0 0.5em;
+  nav {
+    padding: 0.5em;
 
-    h3 {
-      display: flex;
-      align-items: center;
-      margin: 0;
+    ul li {
+      padding: 0 0.5em;
 
-      span {
-        color: var(--pico-color-azure-300);
-        margin-right: 0.25em;
+      h3 {
+        display: flex;
+        align-items: center;
+        margin: 0;
+
+        span {
+          color: var(--pico-color-azure-300);
+          margin-right: 0.25em;
+        }
       }
     }
   }
