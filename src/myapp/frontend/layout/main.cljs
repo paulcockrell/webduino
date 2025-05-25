@@ -1,11 +1,15 @@
 (ns myapp.frontend.layout.main
-  (:require [myapp.frontend.layout.alert :as a]
+  (:require [myapp.frontend.layout.alert :as alert]
             [re-frame.core :as rf]))
 
 (defn alert-section []
-  (let [app-alert @(rf/subscribe [:app/alert])]
-    (if app-alert
-      [a/alert-error app-alert]
+  (let [{:keys [type message]} @(rf/subscribe [:app/alert])]
+    (println "XXX type " type " message " message)
+    (case type
+      "error" [alert/alert-error message]
+      "warning" [alert/alert-warning message]
+      "success" [alert/alert-success message]
+      ;; default
       [:<>])))
 
 (defn main [children]

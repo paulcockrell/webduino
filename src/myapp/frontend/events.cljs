@@ -5,15 +5,20 @@
 (rf/reg-event-db
  :app/init
  (fn [_ _]
-   {:app {:alert nil} ;; any alert type, success/warning/error
+   {:app {:alert nil} ;; {:type <success|warning|error> :message "err"}
     :current-page :home
-    :arduino {:connection :closed ;; arduino/connection can be either open opening closed
-              :timeout-id nil ;; arduino connection timeout 
+    :arduino {:connection :closed ;; arduino connection can be either open opening closed
+              :timeout-id nil ;; connection timeout timer id
               }}))
+
+(re-frame.core/reg-event-db
+ :app/alert-set
+ (fn [db [_ {:keys [type message]}]]
+   (assoc-in db [:app :alert] {:type type :message message})))
 
 (rf/reg-event-db
  :app/alert-clear
- (fn [db [_ value]]
+ (fn [db [_ _]]
    (assoc-in db [:app :alert] nil)))
 
 (rf/reg-event-db
@@ -21,14 +26,12 @@
  (fn [db [_ value]]
    (assoc-in db [:arduino :connection] value)))
 
-(rf/reg-event-db
+(rf/reg-event-fx
  :arduino/connection-timeout
- (fn [db _]
-   (if (= :opening (get-in db [:arduino :connection]))
-     (-> db
-         (assoc-in [:arduino :connection] :closed)
-         (assoc-in [:app :alert] "Connection timeout"))
-     db)))
+ (fn [_ _]
+   (println "XXX connection-timeout")
+   {:dispatch-n [[:arduino/connection :closed]
+                 [:app/alert-set {:type "error" :message "Connection failed"}]]}))
 
 (rf/reg-event-fx
  :arduino/connect
@@ -36,7 +39,7 @@
    (client/start!)
    {:dispatch-n [[:arduino/connection :opening]
                  [:app/alert-clear]]
-    :dispatch-later [{:ms 5000 :dispatch [:arduino/connection-timeout]}]}))
+    :dispatch-later [{:ms 2000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
  :arduino/flash

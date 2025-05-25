@@ -47,6 +47,14 @@
 
 (defmulti pages identity)
 
+(defmethod pages :default [_]
+  [layout/layout
+   [:div "Error: page not found"]])
+
+(defmethod pages nil [_]
+  [layout/layout
+   [:div "Error: No page selected"]])
+
 (defmethod pages :home []
   [layout/layout
    [dashboard/dashboard]])
