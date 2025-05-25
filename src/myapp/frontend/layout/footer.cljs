@@ -13,9 +13,8 @@
 (defn footer []
   [:footer {:class "container-fluid"}
    [:nav {:id "device-ribbon"}
-    [:div {:class "ribbon-home"}
-     [nav-button :home "Home" "home"]]
-    [:div {:class "ribbon-buttons"}
+    [:nav {:class "ribbon-buttons"}
+     [nav-button :home "Home" "home"]
      [nav-button :sensors-temperature "temperature" "device_thermostat"]
      [nav-button :devices-button "Button" "radio_button_checked"]
      [nav-button :devices-led "LED" "lightbulb"]

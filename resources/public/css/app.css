@@ -122,34 +122,11 @@ article {
   background: var(--pico-primary);
 
   button {
-    all: unset;
-    font: inherit;
-    color: var(--pico-color, #333);
+    border: 0;
+    border-radius: 0;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 0.75rem;
-    text-align: center;
-    cursor: pointer;
-    color: var(--pico-color);
-    background-color: var(--pico-primary-background);
-    &.active {
-      color: var(--pico-primary-background);
-      background-color: var(--pico-primary-focus);
-    }
-  }
-
-  .ribbon-home {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    &:has(button.active) {
-      background-color: var(--pico-primary-focus);
-    }
-    button {
-      height: 100%;
-    }
+    --pico-box-shadow: 0;
   }
 
   .ribbon-buttons {
