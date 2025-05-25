@@ -54,15 +54,29 @@
 (defmethod pages :sensors-temperature []
   [layout/layout
    [:<>
-    [:div.heading-icon
-     [:span.material-symbols-outlined "device_thermostat"]]
-    [:div.grid
-     [:div
-      [:h3 "About temperature sensors"]
-      [:p "Lorum ipsum blah blah"]]
-     [:div
-      [:h3 "Interact"]
-      [:p "Buzz when temperature exceeds 20'c"]]]]])
+    [:section
+     [:hgroup
+      [:div.heading-icon
+       [:span.material-symbols-outlined "device_thermostat"]]
+      [:div
+       [:p "A thermometer measures how hot or cold something is. It turns temperature into numbers the computer can understand."]
+       [:p "To change the value below, gently heat or cool the thermometer."]]]]
+    [:section.sensor
+     [:div.grid
+      [:p.sensor-reading
+       [:span.sensor-reading-value "23"]
+       [:span.sensor-reading-units "°c"]]
+      [:div.chart
+       [:div.bar.h-40]
+       [:div.bar.h-40]
+       [:div.bar.h-70]
+       [:div.bar.h-10]
+       [:div.bar.h-50]
+       [:div.bar.h-40]
+       [:div.bar.h-70]
+       [:div.bar.h-10]
+       [:div.bar.h-50]
+       [:div.bar.h-90]]]]]])
 
 (defmethod pages :devices-button []
   [layout/layout
@@ -72,8 +86,12 @@
   [layout/layout
    [:<>
     [:section
-     [:div.heading-icon
-      [:span.material-symbols-outlined "lightbulb"]]]
+     [:hgroup
+      [:div.heading-icon
+       [:span.material-symbols-outlined "lightbulb"]]
+      [:p "An LED is a small light. It can turn on, off, or change brightness to show messages or status."]
+      [:p "Move the slider to change the brightness of the LED"]]]
+
     [:section
      [:fieldset
       [:label {:for "priority"} "Brightness"]
@@ -86,10 +104,7 @@
                :step "1"
                :default-value "3"
                :style (js-obj "--pico-selected-ratio" "25%")}]
-      [:div {:style {:display "flex"
-                     :justifyContent "space-between"
-                     :marginTop "0.5rem"
-                     :fontSize "0.9rem"}}
+      [:div.datalist
        (for [label ["Min" "Low" "Medium" "High" "Max"]]
          [:span label])]]]]])
 
