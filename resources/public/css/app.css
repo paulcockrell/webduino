@@ -97,6 +97,17 @@ article {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  button {
+    &.close-btn {
+      margin-left: auto;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--pico-muted-color);
+      display: flex;
+    }
+  }
 }
 
 #device-ribbon {
