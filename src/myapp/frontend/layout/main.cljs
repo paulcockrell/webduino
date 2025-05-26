@@ -4,7 +4,6 @@
 
 (defn alert-section []
   (let [{:keys [type message]} @(rf/subscribe [:app/alert])]
-    (println "XXX type " type " message " message)
     (case type
       "error" [alert/alert-error message]
       "warning" [alert/alert-warning message]

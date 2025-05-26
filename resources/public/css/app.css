@@ -216,3 +216,34 @@ section {
 .h-100 {
   height: 100%;
 }
+
+.connection-form {
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: var(--pico-block-spacing-vertical)
+    var(--pico-block-spacing-horizontal);
+
+  @media (min-width: 1024px) {
+    max-width: 950px;
+  }
+
+  @media (min-width: 768px) {
+    max-width: 700px;
+  }
+
+  @media (min-width: 576px) {
+    max-width: 510px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  h1,
+  label {
+    color: var(--pico-muted-color);
+  }
+}

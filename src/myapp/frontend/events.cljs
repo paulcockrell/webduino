@@ -35,8 +35,8 @@
 
 (rf/reg-event-fx
  :arduino/connect
- (fn [_ _]
-   (client/start!)
+ (fn [_ value]
+   (client/start! value)
    {:dispatch-n [[:arduino/connection :opening]
                  [:app/alert-clear]]
     :dispatch-later [{:ms 2000 :dispatch [:arduino/connection-timeout]}]}))

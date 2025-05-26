@@ -1,5 +1,7 @@
 (ns myapp.frontend.views
-  (:require [myapp.frontend.layout.layout :as layout]
+  (:require [re-frame.core :as rf]
+            [myapp.frontend.connection.connection :as connection]
+            [myapp.frontend.layout.layout :as layout]
             [myapp.frontend.dashboard.dashboard :as dashboard]))
 
 ;; (defn connect-button []
@@ -56,8 +58,11 @@
    [:div "Error: No page selected"]])
 
 (defmethod pages :home []
-  [layout/layout
-   [dashboard/dashboard]])
+  (let [status @(rf/subscribe [:arduino/connection])]
+    [layout/layout
+     (if (= :open status)
+       [dashboard/dashboard]
+       [connection/form])]))
 
 (defmethod pages :sensors-temperature []
   [layout/layout

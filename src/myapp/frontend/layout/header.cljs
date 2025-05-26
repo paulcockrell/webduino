@@ -2,12 +2,13 @@
   (:require [re-frame.core :as rf]))
 
 (defn -connect-button []
-  ;; app/connection can be either open opening closed
+  ;; app/connection can be either open, opening, closed
   (let [status @(rf/subscribe [:arduino/connection])]
-    [:button {:aria-busy (= :opening status)
-              :disabled (= :opening status)
-              :on-click (when (= :closed status)
-                          #(rf/dispatch [:arduino/connect]))} (if (= :open status) "Disconnect" "Connect")]))
+    (when (= :open status)
+      [:button {:aria-busy (= :opening status)
+                :disabled (= :opening status)
+                :on-click (when (= :closed status)
+                            #(rf/dispatch [:arduino/disconnect]))} "Disconnect"])))
 
 (defn header []
   [:header.container-fluid
