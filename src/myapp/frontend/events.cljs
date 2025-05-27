@@ -61,7 +61,7 @@
    (client/send! :arduino/start {:port port})
    {:dispatch-n [[:arduino/connection :opening]
                  [:app/alert-clear]]
-    :dispatch-later [{:ms 10000 :dispatch [:arduino/connection-timeout]}]}))
+    :dispatch-later [{:ms 20000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
  :arduino/flash

@@ -119,7 +119,7 @@
                :style (js-obj "--pico-selected-ratio" "25%")}]
       [:div.datalist
        (for [label ["Min" "Low" "Medium" "High" "Max"]]
-         [:span label])]]]]])
+         [:span {:key label} label])]]]]])
 
 (defmethod pages :sensors-humidity []
   [layout/layout
