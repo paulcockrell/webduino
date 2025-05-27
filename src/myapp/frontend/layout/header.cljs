@@ -1,14 +1,14 @@
 (ns myapp.frontend.layout.header
   (:require [re-frame.core :as rf]))
 
-(defn -connect-button []
-  ;; app/connection can be either open, opening, closed
-  (let [status @(rf/subscribe [:arduino/connection])]
-    (when (= :open status)
-      [:button {:aria-busy (= :opening status)
-                :disabled (= :opening status)
-                :on-click (when (= :closed status)
-                            #(rf/dispatch [:arduino/disconnect]))} "Disconnect"])))
+(defn -server-connection-status
+  "Display icon representing the websocket connection status, which can be open, opening, closed"
+  []
+  (let [status @(rf/subscribe [:server/connection])]
+    [:div {:data-tooltip "Connection to server open"
+           :data-placement "left"}
+     [:span.material-symbols-outlined.heading-icon {:class (if (= :open status) "pico-color-green-200" "pico-color-red-200")}
+      "router"]]))
 
 (defn header []
   [:header.container-fluid
@@ -21,4 +21,4 @@
        "Webduino"]]]
     [:ul
      [:li
-      [-connect-button]]]]])
+      [-server-connection-status]]]]])

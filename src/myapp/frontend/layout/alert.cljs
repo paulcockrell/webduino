@@ -30,3 +30,13 @@
    [:button.close-btn
     {:on-click #(re-frame.core/dispatch [:app/alert-clear])}
     [:span.material-symbols-outlined.pico-primary "close"]]])
+
+(defn alert-info [message]
+  [:div.alert.pico-background-blue-50 {:role "alert"}
+   [:span.material-symbols-outlined.pico-color-blue-500
+    "info"]
+   [:span.pico-color-blue-500
+    message]
+   [:button.close-btn
+    {:on-click #(re-frame.core/dispatch [:app/alert-clear])}
+    [:span.material-symbols-outlined.pico-primary "close"]]])

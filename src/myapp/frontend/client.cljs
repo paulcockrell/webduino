@@ -23,8 +23,8 @@
   (when-let [send-fn @chsk-send!]
     (send-fn [key payload])))
 
-(defn create-client! [conn]
-  (let [{:keys [ch-recv send-fn state]} (sente/make-channel-socket-client! "/chsk" ?csrf-token config "&conn=" conn)]
+(defn create-client! []
+  (let [{:keys [ch-recv send-fn state]} (sente/make-channel-socket-client! "/chsk" ?csrf-token config)]
     (reset! ch-chsk ch-recv)
     (reset! chsk-send! send-fn)
     (add-watch state :state-watcher state-watcher)))
@@ -36,6 +36,6 @@
   (stop-router!)
   (reset! router_ (sente/start-client-chsk-router! @ch-chsk handlers/event-msg-handler)))
 
-(defn start! [conn]
-  (create-client! conn)
+(defn start! []
+  (create-client!)
   (start-router!))

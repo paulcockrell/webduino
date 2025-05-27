@@ -7,6 +7,7 @@
     (case type
       "error" [alert/alert-error message]
       "warning" [alert/alert-warning message]
+      "info" [alert/alert-info message]
       "success" [alert/alert-success message]
       ;; default
       [:<>])))

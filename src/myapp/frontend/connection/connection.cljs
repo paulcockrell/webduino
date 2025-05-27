@@ -8,7 +8,7 @@
       [:section.connection-form
        [:h1 "Connect to Arduino"]
        [:form
-        [:input {:placeholder "/dev/usb.serial001"
+        [:input {:placeholder "/dev/tty.usbserial-110"
                  :aria-label "Connection string"
                  :autoComplete "connection-string"
                  :required ""

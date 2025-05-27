@@ -8,6 +8,11 @@
   [{:as ev-msg :keys [id ?data event]}]
   (-event-msg-handler ev-msg))
 
+(defmethod -event-msg-handler :arduino/start
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [port]} ?data]
+    (arduino/start! port)))
+
 (defmethod -event-msg-handler :arduino/blink
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (when-let [{:keys [led-pin duration]} ?data]

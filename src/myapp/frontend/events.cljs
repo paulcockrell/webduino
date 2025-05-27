@@ -7,6 +7,9 @@
  (fn [_ _]
    {:app {:alert nil} ;; {:type <success|warning|error> :message "err"}
     :current-page :home
+    :server {:connection :closed ;; server websocket connection can be either open opening closed
+             :timeout-id nil ;; connection timeout timer id
+             }
     :arduino {:connection :closed ;; arduino connection can be either open opening closed
               :timeout-id nil ;; connection timeout timer id
               }}))
@@ -22,6 +25,25 @@
    (assoc-in db [:app :alert] nil)))
 
 (rf/reg-event-db
+ :server/connection
+ (fn [db [_ value]]
+   (assoc-in db [:server :connection] value)))
+
+(rf/reg-event-fx
+ :server/connection-timeout
+ (fn [{:keys [db]} _]
+   (when (not= :open (get-in db [:server :connection]))
+     {:dispatch-n [[:server/connection :closed]
+                   [:app/alert-set {:type "error" :message "Connection to server failed"}]]})))
+
+(rf/reg-event-fx
+ :server/connect
+ (fn [_ _]
+   (client/start!)
+   {:dispatch [:server/connection :opening]
+    :dispatch-later [{:ms 1000 :dispatch [:server/connection-timeout]}]}))
+
+(rf/reg-event-db
  :arduino/connection
  (fn [db [_ value]]
    (assoc-in db [:arduino :connection] value)))
@@ -29,14 +51,13 @@
 (rf/reg-event-fx
  :arduino/connection-timeout
  (fn [_ _]
-   (println "XXX connection-timeout")
    {:dispatch-n [[:arduino/connection :closed]
-                 [:app/alert-set {:type "error" :message "Connection failed"}]]}))
+                 [:app/alert-set {:type "error" :message "Connection to Arduino failed"}]]}))
 
 (rf/reg-event-fx
  :arduino/connect
- (fn [_ value]
-   (client/start! value)
+ (fn [_ _]
+   (client/start!)
    {:dispatch-n [[:arduino/connection :opening]
                  [:app/alert-clear]]
     :dispatch-later [{:ms 2000 :dispatch [:arduino/connection-timeout]}]}))

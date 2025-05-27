@@ -6,7 +6,7 @@
 (defonce arduino-board (atom nil))
 
 (defn start! []
-  (arduino/start! (System/getenv "SERIAL_PORT"))
+  ;; (arduino/start! (System/getenv "SERIAL_PORT"))
   (router/start!)
   (server/start! 3000)
   (arduino/start-myapp-broadcaster!))

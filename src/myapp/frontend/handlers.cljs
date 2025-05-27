@@ -26,6 +26,20 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/led-event ?data]))
 
+(defmethod -event-msg-handler :chsk/state
+  [{:keys [?data]}]
+  (println ?data)
+  (let [{:keys [open? _ever-opened? _csrf-token]} (second ?data)]
+    (cond
+      open?
+      (do (println "Websocket connection to server open")
+          (rf/dispatch [:server/connection :open])
+          (rf/dispatch [:app/alert-clear]))
+      (not open?)
+      (do (println "Websocket connection to server closed")
+          (rf/dispatch [:server/connection :closed])
+          (println "Connection to server closed")))))
+
 (defmethod -event-msg-handler :chsk/handshake
   [_]
-  (rf/dispatch [:arduino/connection :open]))
+  (println "Websocket handshake received"))

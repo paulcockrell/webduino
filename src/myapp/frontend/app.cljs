@@ -17,4 +17,5 @@
   (.log js/console "🚀 Initializing app")
   (router/init-routes!)
   (rf/dispatch-sync [:app/init])
+  (rf/dispatch [:server/connect])
   (rdom/render [app] (.getElementById js/document "app")))
