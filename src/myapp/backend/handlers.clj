@@ -11,6 +11,7 @@
 (defmethod -event-msg-handler :arduino/start
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (when-let [{:keys [port]} ?data]
+    (println "Recieved request to start Arduino connection on port " port)
     (arduino/start! port)))
 
 (defmethod -event-msg-handler :arduino/blink
@@ -22,6 +23,14 @@
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (let [info (arduino/firmware)]
     (socket/broadcast! {:key :arduino/send-firmware :message info})))
+
+(defmethod -event-msg-handler :chsk/ws-ping
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (println  "RCV: " event))
+
+(defmethod -event-msg-handler :chsk/ws-pong
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (println  "RCV: " event))
 
 (defmethod -event-msg-handler :default
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]

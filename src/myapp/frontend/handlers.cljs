@@ -14,6 +14,12 @@
   [{:keys [event]}]
   (log "Unhandled event:" event))
 
+(defmethod -event-msg-handler :arduino/connection
+  [{:keys [?data]}]
+  (when-let [{:keys [state]} ?data]
+    (println "Arduino connection opened " state)
+    (rf/dispatch [:arduino/connection state])))
+
 (defmethod -event-msg-handler :arduino/send-firmware
   [{:keys [?data]}]
   (rf/dispatch [:arduino/firmware ?data]))

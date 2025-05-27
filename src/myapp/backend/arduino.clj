@@ -15,15 +15,17 @@
     (fm/close! @arduino-board_)))
 
 (defn start!
-  "Open and store the connection to Arduino"
-  ([] (start! :auto-detect))
+  "Open and store the connection to Arduino and apply and deferred registrations"
   ([port]
    (stop!)
    (let [board (fm/open-serial-board port)]
      (println "Connected to Arduino on port " port)
+     ;; XXX TODO: I don't think this broadcast is recieved/processed by the frontend!
+     (events/broadcast-arduino-started)
      (reset! arduino-board_ board)
      ;; Replay deferred registrations
-     (doseq [f @deferred-registrations]
+     (doseq [[id f] @deferred-registrations]
+       (println "Applying deferred registration for " id)
        (f board))
      board)))
 

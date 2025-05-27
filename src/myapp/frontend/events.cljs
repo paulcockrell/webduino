@@ -50,17 +50,18 @@
 
 (rf/reg-event-fx
  :arduino/connection-timeout
- (fn [_ _]
-   {:dispatch-n [[:arduino/connection :closed]
-                 [:app/alert-set {:type "error" :message "Connection to Arduino failed"}]]}))
+ (fn [{:keys [db]} _]
+   (when (not= :open (get-in db [:arduino :connection]))
+     {:dispatch-n [[:arduino/connection :closed]
+                   [:app/alert-set {:type "error" :message "Connection to Arduino failed"}]]})))
 
 (rf/reg-event-fx
  :arduino/connect
- (fn [_ _]
-   (client/start!)
+ (fn [_ [_ port]]
+   (client/send! :arduino/start {:port port})
    {:dispatch-n [[:arduino/connection :opening]
                  [:app/alert-clear]]
-    :dispatch-later [{:ms 2000 :dispatch [:arduino/connection-timeout]}]}))
+    :dispatch-later [{:ms 10000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
  :arduino/flash

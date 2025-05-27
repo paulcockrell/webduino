@@ -3,10 +3,13 @@
             [reagent.core :as rc]))
 
 (defn form []
-  (rc/with-let [conn (rc/atom "")]
+  (rc/with-let [conn (rc/atom "/dev/tty.usbserial-1110")]
     (let [status @(rf/subscribe [:arduino/connection])]
       [:section.connection-form
        [:h1 "Connect to Arduino"]
+       [:small
+        [:p "To find the port your Arduino is connected to you can run the following command (MacOS and Linux only) "
+         [:code "ls -la /dev | grep usbserial"]]]
        [:form
         [:input {:placeholder "/dev/tty.usbserial-110"
                  :aria-label "Connection string"
