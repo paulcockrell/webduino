@@ -66,7 +66,7 @@
 (rf/reg-event-fx
  :arduino/flash
  (fn [_ _]
-   (client/send! :arduino/blink {:led-pin 2 :duration 1000})
+   (client/send! :arduino/blink {:led-pin 10 :duration 1000})
    {}))
 
 ;;---------- firmware callbacks

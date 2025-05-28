@@ -20,7 +20,6 @@
    (stop!)
    (let [board (fm/open-serial-board port)]
      (println "Connected to Arduino on port " port)
-     ;; XXX TODO: I don't think this broadcast is recieved/processed by the frontend!
      (events/broadcast-arduino-started)
      (reset! arduino-board_ board)
      ;; Replay deferred registrations

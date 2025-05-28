@@ -96,6 +96,7 @@
    [:div [:h1 "Devices - Button"]]])
 
 (defmethod pages :devices-led []
+  (rf/dispatch [:arduino/flash])
   [layout/layout
    [:<>
     [:section

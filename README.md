@@ -60,3 +60,23 @@ It should just work as Docker has access to the host ports, update the `SERIAL_P
 ```bash
 docker-compose up
 ```
+
+## Arduino starter kit info
+
+In the IDE the board options are:
+Board: Arduino UNO
+Baud rate: 115200 (With factory firmware on the kit)
+Baud rate: 57600 (With Firmata on the kit)
+
+Pin out [link](https://www.elecrow.com/wiki/All-in-one_Starter_Common_Board_Kit_for_Arduino.html)
+
+### Problems on Mac
+
+If you have Apple silicon you may have issues with old 32bit drivers.
+
+To get the Arduino IDE to upload to the board I had to delete the 32bit board
+manager first:
+
+```bash
+rm -rf ~/Library/Arduino15/packages/arduino/tools/avrdude/<the-older-version>
+```
