@@ -3,6 +3,7 @@
             [firmata.receiver :as fmr]
             [clojure.core.async :as async]
             [myapp.backend.arduino.events :as events]
+            [myapp.backend.arduino.led :as led]
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
@@ -39,13 +40,17 @@
 (defn blink!
   "Blink LED on pin X for Y milliseconds"
   [led-pin duration]
+  (println "XXX ??? lbinky")
   (when @arduino-board_
-    (events/broadcast-led-event led-pin :high)
-    (fm/set-digital @arduino-board_ led-pin :high)
-    (Thread/sleep duration)
-    (fm/set-digital @arduino-board_ led-pin :low)
-    (events/broadcast-led-event led-pin :low)
-    nil))
+    (println "XXX doing a blink!")
+    (led/start-blinker-loop! arduino-board_ led-pin)))
+  ;; (when @arduino-board_
+  ;;   (events/broadcast-led-event led-pin :high)
+  ;;   (fm/set-digital @arduino-board_ led-pin :high)
+  ;;   (Thread/sleep duration)
+  ;;   (fm/set-digital @arduino-board_ led-pin :low)
+  ;;   (events/broadcast-led-event led-pin :low)
+  ;;   nil))
 
 (defn firmware
   "Get the firmware details from the board"
