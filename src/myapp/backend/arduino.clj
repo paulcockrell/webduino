@@ -37,20 +37,20 @@
   (when @arduino-board_
     (cb @arduino-board_)))
 
-(defn blink!
-  "Blink LED on pin X for Y milliseconds"
-  [led-pin duration]
-  (println "XXX ??? lbinky")
+(defn led-start-blinking!
+  [led-pin freq]
   (when @arduino-board_
-    (println "XXX doing a blink!")
-    (led/start-blinker-loop! arduino-board_ led-pin)))
-  ;; (when @arduino-board_
-  ;;   (events/broadcast-led-event led-pin :high)
-  ;;   (fm/set-digital @arduino-board_ led-pin :high)
-  ;;   (Thread/sleep duration)
-  ;;   (fm/set-digital @arduino-board_ led-pin :low)
-  ;;   (events/broadcast-led-event led-pin :low)
-  ;;   nil))
+    (led/start-blinking! arduino-board_ led-pin freq)))
+
+(defn led-update-blinking!
+  [freq]
+  (when @arduino-board_
+    (led/update-frequency! freq)))
+
+(defn led-stop-blinking!
+  [led-pin]
+  (when @arduino-board_
+    (led/stop-blinking! arduino-board_ led-pin)))
 
 (defn firmware
   "Get the firmware details from the board"

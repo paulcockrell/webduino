@@ -96,7 +96,8 @@
    [:div [:h1 "Devices - Button"]]])
 
 (defmethod pages :devices-led []
-  (rf/dispatch [:arduino/flash])
+  (rf/dispatch [:arduino/led-start-blink {:freq 250}])
+
   [layout/layout
    [:<>
     [:section
@@ -108,16 +109,17 @@
 
     [:section
      [:fieldset
-      [:label {:for "priority"} "Brightness"]
-      [:input {:id "priority"
-               :name "priority"
+      [:label {:for "blink-frequency"} "Blink frequency"]
+      [:input {:id "blink-frequency"
+               :name "blink-frequency"
                :type "range"
-               :list "priorities"
-               :min "1"
-               :max "5"
-               :step "1"
-               :default-value "3"
-               :style (js-obj "--pico-selected-ratio" "25%")}]
+               :list "blink-frequencies"
+               :min "250"
+               :max "1500"
+               :step "250"
+               :default-value "250"
+               :style (js-obj "--pico-selected-ratio" "25%")
+               :on-change (fn [e] (rf/dispatch [:arduino/led-update-blink {:freq (js/parseInt (.. e -target -value))}]))}]
       [:div.datalist
        (for [label ["Min" "Low" "Medium" "High" "Max"]]
          [:span {:key label} label])]]]]])

@@ -64,9 +64,22 @@
     :dispatch-later [{:ms 20000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
- :arduino/flash
- (fn [_ _]
-   (client/send! :arduino/blink {:led-pin 10 :duration 1000})
+ :arduino/led-start-blink
+ (fn [_ [_ {:keys [freq]}]]
+   (client/send! :arduino/led-start-blinking {:led-pin 10 :freq freq})
+   {}))
+
+(rf/reg-event-fx
+ :arduino/led-update-blink
+ (fn [_ [_ {:keys [freq]}]]
+   (println "XXX oi oi " freq)
+   (client/send! :arduino/led-update-blinking {:freq freq})
+   {}))
+
+(rf/reg-event-fx
+ :arduino/led-stop-blink
+ (fn [_ [_ _]]
+   (client/send! :arduino/led-stop-blinking {:led-pin 10})
    {}))
 
 ;;---------- firmware callbacks

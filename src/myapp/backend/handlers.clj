@@ -14,10 +14,23 @@
     (println "Recieved request to start Arduino connection on port " port)
     (arduino/start! port)))
 
-(defmethod -event-msg-handler :arduino/blink
+(defmethod -event-msg-handler :arduino/led-start-blinking
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
-  (when-let [{:keys [led-pin duration]} ?data]
-    (arduino/blink! led-pin duration)))
+  (when-let [{:keys [led-pin freq]} ?data]
+    (println "led-start-blinking. led-pin=" led-pin ", freq=" freq)
+    (arduino/led-start-blinking! led-pin freq)))
+
+(defmethod -event-msg-handler :arduino/led-update-blinking
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [freq]} ?data]
+    (println "led-update-blinking. freq=" freq)
+    (arduino/led-update-blinking! freq)))
+
+(defmethod -event-msg-handler :arduino/led-stop-blinking
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [led-pin]} ?data]
+    (println "led-stop-blinking. led-pin=" led-pin)
+    (arduino/led-stop-blinking! led-pin)))
 
 (defmethod -event-msg-handler :arduino/get-firmware
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
