@@ -18,6 +18,8 @@
                  :type "text"
                  :name "connection-string"
                  :value @conn
+                 :aria-busy (= :opening status)
+                 :disabled (= :opening status)
                  :on-change #(reset! conn (-> % .-target .-value))}]
         [:button {:aria-busy (= :opening status)
                   :disabled (or (= :opening status)
