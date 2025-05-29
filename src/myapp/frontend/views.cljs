@@ -96,7 +96,7 @@
    [:div [:h1 "Devices - Button"]]])
 
 (defmethod pages :devices-led []
-  (rf/dispatch [:arduino/led-start-blink {:freq 250}])
+  (rf/dispatch [:arduino/led-start-blink {:freq 100}])
 
   [layout/layout
    [:<>
@@ -114,14 +114,15 @@
                :name "blink-frequency"
                :type "range"
                :list "blink-frequencies"
-               :min "250"
-               :max "1500"
-               :step "250"
-               :default-value "250"
+               :min "100"
+               :max "500"
+               :step "100"
+               :default-value "100"
                :style (js-obj "--pico-selected-ratio" "25%")
-               :on-change (fn [e] (rf/dispatch [:arduino/led-update-blink {:freq (js/parseInt (.. e -target -value))}]))}]
+               :on-mouse-up (fn [e] (rf/dispatch [:arduino/led-update-blink {:freq (js/parseInt (.. e -target -value))}]))
+               :on-touch-end (fn [e] (rf/dispatch [:arduino/led-update-blink {:freq (js/parseInt (.. e -target -value))}]))}]
       [:div.datalist
-       (for [label ["Min" "Low" "Medium" "High" "Max"]]
+       (for [label ["fastest" "fast" "Medium" "slow" "slowest"]]
          [:span {:key label} label])]]]]])
 
 (defmethod pages :sensors-humidity []

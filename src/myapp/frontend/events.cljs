@@ -72,7 +72,6 @@
 (rf/reg-event-fx
  :arduino/led-update-blink
  (fn [_ [_ {:keys [freq]}]]
-   (println "XXX oi oi " freq)
    (client/send! :arduino/led-update-blinking {:freq freq})
    {}))
 

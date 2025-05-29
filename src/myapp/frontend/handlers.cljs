@@ -34,7 +34,6 @@
 
 (defmethod -event-msg-handler :chsk/state
   [{:keys [?data]}]
-  (println ?data)
   (let [{:keys [open? _ever-opened? _csrf-token]} (second ?data)]
     (cond
       open?
