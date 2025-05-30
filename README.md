@@ -20,7 +20,6 @@ ls -la /dev/tty*|grep usbserial
 ```
 
 ```bash
-SERIAL_PORT=/dev/tty.usbserial-110 watchexec -r -e clj -- clojure -M -m myapp.backend.main
 ```
 
 ### Frontend
