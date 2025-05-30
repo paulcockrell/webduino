@@ -64,6 +64,12 @@
     :dispatch-later [{:ms 20000 :dispatch [:arduino/connection-timeout]}]}))
 
 (rf/reg-event-fx
+ :arduino/servo-move
+ (fn [_ [_ {:keys [angle]}]]
+   (client/send! :arduino/servo-move {:servo-pin 9 :angle angle})
+   {}))
+
+(rf/reg-event-fx
  :arduino/led-start-blink
  (fn [_ [_ {:keys [freq]}]]
    (client/send! :arduino/led-start-blinking {:led-pin 10 :freq freq})

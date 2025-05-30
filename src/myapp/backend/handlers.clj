@@ -14,10 +14,16 @@
     (println "Recieved request to start Arduino connection on port " port)
     (arduino/start! port)))
 
+(defmethod -event-msg-handler :arduino/servo-move
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [servo-pin angle]} ?data]
+    (println "servo-move  servo-pin=" servo-pin " angle=" angle)
+    (arduino/servo-move! servo-pin angle)))
+
 (defmethod -event-msg-handler :arduino/led-start-blinking
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (when-let [{:keys [led-pin freq]} ?data]
-    (println "led-start-blinking  led-pin=" led-pin ", freq=" freq)
+    (println "led-start-blinking  led-pin=" led-pin " freq=" freq)
     (arduino/led-start-blinking! led-pin freq)))
 
 (defmethod -event-msg-handler :arduino/led-update-blinking

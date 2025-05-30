@@ -4,6 +4,7 @@
             [clojure.core.async :as async]
             [myapp.backend.arduino.events :as events]
             [myapp.backend.arduino.led :as led]
+            [myapp.backend.arduino.servo :as servo]
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
@@ -36,6 +37,11 @@
   ;; If board is already connected, run it immediately
   (when @arduino-board_
     (cb @arduino-board_)))
+
+(defn servo-move!
+  [servo-pin angle]
+  (when @arduino-board_
+    (servo/move! arduino-board_ servo-pin angle)))
 
 (defn led-start-blinking!
   [led-pin freq]
