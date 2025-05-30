@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.led-card)
+(ns myapp.frontend.views.dashboard.led-card)
 
 (defn led-card []
   [:article {:id "led"}

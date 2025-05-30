@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.temperature-sensor-card)
+(ns myapp.frontend.views.dashboard.temperature-sensor-card)
 
 (defn temperature-sensor-card []
   [:article {:id "temperature"}

@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.infrared-receiver-sensor-card)
+(ns myapp.frontend.views.dashboard.infrared-receiver-sensor-card)
 
 (defn infrared-receiver-sensor-card []
   [:article {:id "infrared-receiver"}

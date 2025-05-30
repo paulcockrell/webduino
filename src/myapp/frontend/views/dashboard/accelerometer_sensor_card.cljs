@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.accelerometer-sensor-card)
+(ns myapp.frontend.views.dashboard.accelerometer-sensor-card)
 
 (defn accelerometer-sensor-card []
   [:article {:id "accelerometer"}

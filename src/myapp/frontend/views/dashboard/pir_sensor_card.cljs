@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.pir-sensor-card)
+(ns myapp.frontend.views.dashboard.pir-sensor-card)
 
 (defn pir-sensor-card []
   [:article {:id "pir-sensor"}

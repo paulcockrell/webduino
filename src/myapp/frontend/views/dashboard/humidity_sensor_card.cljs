@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.humidity-sensor-card)
+(ns myapp.frontend.views.dashboard.humidity-sensor-card)
 
 (defn humidity-sensor-card []
   [:article {:id "humidity"}

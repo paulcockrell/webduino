@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.relay-card)
+(ns myapp.frontend.views.dashboard.relay-card)
 
 (defn relay-card []
   [:article {:id "relay"}

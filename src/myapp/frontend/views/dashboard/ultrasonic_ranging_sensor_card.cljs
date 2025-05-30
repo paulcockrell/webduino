@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.ultrasonic-ranging-sensor-card)
+(ns myapp.frontend.views.dashboard.ultrasonic-ranging-sensor-card)
 
 (defn ultrasonic-ranging-sensor-card []
   [:article {:id "ultrasonic-ranging-sensor"}

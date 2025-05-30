@@ -1,9 +1,11 @@
 (ns myapp.frontend.views
-  (:require [re-frame.core :as rf]
-            [reagent.core :as ra]
-            [myapp.frontend.connection.connection :as connection]
-            [myapp.frontend.layout.layout :as layout]
-            [myapp.frontend.dashboard.dashboard :as dashboard]))
+  (:require [myapp.frontend.layout.layout :as layout]
+            [myapp.frontend.views.led :as led]
+            [myapp.frontend.views.button :as button]
+            [myapp.frontend.views.not-found :as not-found]
+            [myapp.frontend.views.not-selected :as not-selected]
+            [myapp.frontend.views.temperature :as temperature]
+            [myapp.frontend.views.home :as home]))
 
 ;; (defn connect-button []
 ;;   ;; app/connection can be either open closed connecting
@@ -50,89 +52,17 @@
 
 (defmulti pages identity)
 
-(defmethod pages :default [_]
-  [layout/layout
-   [:div "Error: page not found"]])
+(defmethod pages :default [_] [not-found/not-found])
 
-(defmethod pages nil [_]
-  [layout/layout
-   [:div "Error: No page selected"]])
+(defmethod pages nil [_] [not-selected/not-selected])
 
-(defmethod pages :home []
-  (let [status @(rf/subscribe [:arduino/connection])]
-    [layout/layout
-     (if (= :open status)
-       [dashboard/dashboard]
-       [connection/form])]))
+(defmethod pages :home [] [home/home])
 
-(defmethod pages :sensors-temperature []
-  [layout/layout
-   [:<>
-    [:section
-     [:hgroup
-      [:div.heading-icon
-       [:span.material-symbols-outlined "device_thermostat"]]
-      [:div
-       [:p "A thermometer measures how hot or cold something is. It turns temperature into numbers the computer can understand."]
-       [:p "To change the value below, gently heat or cool the thermometer."]]]]
-    [:section.sensor
-     [:div.grid
-      [:p.sensor-reading
-       [:span.sensor-reading-value "23"]
-       [:span.sensor-reading-units "°c"]]
-      [:div.chart
-       [:div.bar.h-40]
-       [:div.bar.h-40]
-       [:div.bar.h-70]
-       [:div.bar.h-10]
-       [:div.bar.h-50]
-       [:div.bar.h-40]
-       [:div.bar.h-70]
-       [:div.bar.h-10]
-       [:div.bar.h-50]
-       [:div.bar.h-90]]]]]])
+(defmethod pages :sensors-temperature [] [temperature/temperature])
 
-(defmethod pages :devices-button []
-  [layout/layout
-   [:div [:h1 "Devices - Button"]]])
+(defmethod pages :devices-button [] [button/button])
 
-(defmethod pages :devices-led []
-  ;; on mount
-  (ra/with-let [_ (do
-                    (rf/dispatch [:arduino/led-start-blink {:freq 100}])
-                    (js/console.log "LED blinking started"))]
-
-    [layout/layout
-     [:<>
-      [:section
-       [:hgroup
-        [:div.heading-icon
-         [:span.material-symbols-outlined "lightbulb"]]
-        [:p "An LED is a small light. It can turn on, off, or change brightness to show messages or status."]
-        [:p "Move the slider to change the brightness of the LED"]]]
-
-      [:section
-       [:fieldset
-        [:label {:for "blink-frequency"} "Blink frequency"]
-        [:input {:id "blink-frequency"
-                 :name "blink-frequency"
-                 :type "range"
-                 :list "blink-frequencies"
-                 :min "100"
-                 :max "500"
-                 :step "100"
-                 :default-value "100"
-                 :style (js-obj "--pico-selected-ratio" "25%")
-                 :on-mouse-up (fn [e] (rf/dispatch [:arduino/led-update-blink {:freq (js/parseInt (.. e -target -value))}]))
-                 :on-touch-end (fn [e] (rf/dispatch [:arduino/led-update-blink {:freq (js/parseInt (.. e -target -value))}]))}]
-        [:div.datalist
-         (for [label ["fastest" "fast" "Medium" "slow" "slowest"]]
-           [:span {:key label} label])]]]]]
-
-    ;; on un-mount
-    (finally
-      (js/console.log "Stopping LED blink")
-      (rf/dispatch [:arduino/led-stop-blink]))))
+(defmethod pages :devices-led [] [led/led])
 
 (defmethod pages :sensors-humidity []
   [layout/layout

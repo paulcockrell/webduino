@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.button-card)
+(ns myapp.frontend.views.dashboard.button-card)
 
 (defn button-card []
   [:article {:id "button"}

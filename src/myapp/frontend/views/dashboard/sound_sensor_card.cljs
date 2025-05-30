@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.sound-sensor-card)
+(ns myapp.frontend.views.dashboard.sound-sensor-card)
 
 (defn sound-sensor-card []
   [:article {:id "sound-sensor"}

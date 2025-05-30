@@ -1,9 +1,9 @@
-(ns myapp.frontend.connection.connection
+(ns myapp.frontend.views.connection
   (:require [re-frame.core :as rf]
             [reagent.core :as rc]))
 
 (defn form []
-  (rc/with-let [conn (rc/atom "/dev/tty.usbserial-1110")]
+  (rc/with-let [conn (rc/atom "/dev/tty.usbserial-1")]
     (let [status @(rf/subscribe [:arduino/connection])]
       [:section.connection-form
        [:h1 "Connect to Arduino"]

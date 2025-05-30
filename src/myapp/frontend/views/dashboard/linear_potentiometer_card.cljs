@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.linear-potentiometer-card)
+(ns myapp.frontend.views.dashboard.linear-potentiometer-card)
 
 (defn linear-potentiometer-card []
   [:article {:id "linear-potentiometer"}

@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.buzzer-card)
+(ns myapp.frontend.views.dashboard.buzzer-card)
 
 (defn buzzer-card []
   [:article {:id "buzzer"}

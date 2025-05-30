@@ -1,4 +1,4 @@
-(ns myapp.frontend.dashboard.servo-card)
+(ns myapp.frontend.views.dashboard.servo-card)
 
 (defn servo-card []
   [:article {:id "servo"}
