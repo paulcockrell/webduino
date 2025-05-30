@@ -10,6 +10,7 @@
 
 (defn app []
   (let [current-page @(rf/subscribe [:current-page])]
+    (println "current-page=" current-page)
     [:div
      [views/pages current-page]]))
 
