@@ -8,13 +8,12 @@
             [myapp.backend.handlers :as handlers]))
 
 (defroutes ring-routes
-  (GET "/" [] endpoints/home-handler)
   (GET  "/chsk"  ring-req (socket/ring-ajax-get-or-ws-handshake ring-req))
   (POST "/chsk"  ring-req (socket/ring-ajax-post                ring-req))
   (GET "*" req
     (if (str/includes? (get-in req [:headers "accept"] "") "text/html")
-      (endpoints/home-handler req)
-      (route/not-found "Not found"))))
+      (endpoints/home-handler req) ;; always serve the index page for text/html requests
+      (route/not-found "Not found")))) ;; non text/html request are not handled
 
 (defonce router_ (atom nil))
 

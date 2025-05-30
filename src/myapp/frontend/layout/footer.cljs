@@ -3,10 +3,15 @@
             [re-frame.core :as rf]))
 
 (defn nav-button [route tooltip icon-name]
-  (let [current @(rf/subscribe [:current-page])]
+  (let [current @(rf/subscribe [:current-page])
+        status @(rf/subscribe [:arduino/connection])]
     [:button
      {:on-click #(rfe/push-state route)
       :data-tooltip tooltip
+      :aria-busy (and (not= :open status)
+                      (not= :home route))
+      :disabled (and (not= :open status)
+                     (not= :home route))
       :class (str "nav-button" (when (= current route) " active"))}
      [:span.material-symbols-outlined icon-name]]))
 
