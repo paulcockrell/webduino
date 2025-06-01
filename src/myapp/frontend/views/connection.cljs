@@ -14,6 +14,7 @@
         [:input {:placeholder "/dev/tty.usbserial-110"
                  :aria-label "Connection string"
                  :autoComplete "connection-string"
+                 :autofocus
                  :required ""
                  :type "text"
                  :name "connection-string"

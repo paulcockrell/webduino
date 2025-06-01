@@ -9,3 +9,6 @@
 
 (defn broadcast-button-event [event]
   (socket/broadcast! {:key :arduino/button-event :message event}))
+
+(defn broadcast-dht20-event [message]
+  (socket/broadcast! {:key :arduino/dht20-event :message message}))

@@ -38,6 +38,16 @@
     (println "led-stop-blinking  led-pin=" led-pin)
     (arduino/led-stop-blinking! led-pin)))
 
+(defmethod -event-msg-handler :arduino/dht20-start-reporting
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (println "dht20-start-reporting")
+  (arduino/dht20-start-reporting!))
+
+(defmethod -event-msg-handler :arduino/dht20-stop-reporting
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (println "dht20-stop-reporting")
+  (arduino/dht20-stop-reporting!))
+
 (defmethod -event-msg-handler :arduino/get-firmware
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (let [info (arduino/firmware)]

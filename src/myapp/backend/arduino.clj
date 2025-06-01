@@ -5,6 +5,7 @@
             [myapp.backend.arduino.events :as events]
             [myapp.backend.arduino.led :as led]
             [myapp.backend.arduino.servo :as servo]
+            [myapp.backend.arduino.dht20 :as dht20]
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
@@ -57,6 +58,16 @@
   [led-pin]
   (when @arduino-board_
     (led/stop-blinking! arduino-board_ led-pin)))
+
+(defn dht20-start-reporting!
+  []
+  (when @arduino-board_
+    (dht20/start-reporting! @arduino-board_)))
+
+(defn dht20-stop-reporting!
+  []
+  (when @arduino-board_
+    (dht20/stop-reporting! @arduino-board_)))
 
 (defn firmware
   "Get the firmware details from the board"

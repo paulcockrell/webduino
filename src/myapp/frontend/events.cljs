@@ -87,6 +87,18 @@
    (client/send! :arduino/led-stop-blinking {:led-pin 10})
    {}))
 
+(rf/reg-event-fx
+ :arduino/dht20-start-reporting
+ (fn [_ [_ _]]
+   (client/send! :arduino/dht20-start-reporting {})
+   {}))
+
+(rf/reg-event-fx
+ :arduino/dht20-stop-reporting
+ (fn [_ [_ _]]
+   (client/send! :arduino/dht20-stop-reporting {})
+   {}))
+
 ;;---------- firmware callbacks
 
 ;; 1.
@@ -151,3 +163,18 @@
  :navigate
  (fn [db [_ route]]
    (assoc db :current-page route)))
+
+;;---------- dht20 callbacks
+
+;; 1. - Receive message from server
+(rf/reg-event-fx
+ :arduino/dht20-event
+ (fn [_ value]
+   {:dispatch [:arduino/dht20 value]}))
+
+;; 2. - Update DB
+(rf/reg-event-db
+ :arduino/dht20
+ (fn [db [_ [_ raw-msg]]]
+   (let [msg (js->clj raw-msg :keywordize-keys true)]
+     (assoc-in db [:arduino :dht20] msg))))
