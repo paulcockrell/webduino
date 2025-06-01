@@ -3,33 +3,37 @@
             [reagent.core :as ra]
             [myapp.frontend.layout.layout :as layout]))
 
+(def readings (atom []))
+
+(defn update-readings [new-reading]
+  (swap! readings
+         (fn [r]
+           (let [r' (conj r (js/Math.round new-reading))]
+             (if (> (count r') 10)
+               (subvec r' 1)
+               r')))))
+
 (defn sensor-reading []
   (let [reading @(rf/subscribe [:arduino/dht20])
-        temperature (:temperature reading)]
+        temperature (get reading :temperature 0)]
     [:<>
      [:p.sensor-reading
-      [:span.sensor-reading-value (.toFixed temperature 2)]
+      [:span.sensor-reading-value (.toFixed temperature 1)]
       [:span.sensor-reading-units "°c"]]]))
 
 (defn sensor-chart []
-  [:div.chart
-   [:div.bar.h-40]
-   [:div.bar.h-40]
-   [:div.bar.h-70]
-   [:div.bar.h-10]
-   [:div.bar.h-50]
-   [:div.bar.h-40]
-   [:div.bar.h-70]
-   [:div.bar.h-10]
-   [:div.bar.h-50]
-   [:div.bar.h-90]])
+  (let [reading @(rf/subscribe [:arduino/dht20])
+        temperature (get reading :temperature 0)]
+    (update-readings temperature)
+    (println @readings)
+    [:div.chart
+     (for [reading @readings]
+       [:div.bar {:class (str "h-" reading) :key (random-uuid)}])]))
 
 (defn temperature []
-  ;; on mount
-  (ra/with-let [_ (do
-                    (rf/dispatch [:arduino/dht20-start-reporting])
-                    (js/console.log "Temperature reporting requested"))]
-
+  ;; on mount. wait a second for any requests to stop sensors to complete
+  ;; before dht20-start-reporting
+  (ra/with-let [_ (js/setTimeout #(rf/dispatch [:arduino/dht20-start-reporting]) 1000)]
     [layout/layout
      [:<>
       [:section

@@ -36,10 +36,6 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/dht20-event ?data]))
 
-(defmethod -event-msg-handler :arduino/dht20
-  [{:keys [?data]}]
-  (rf/dispatch [:arduino/dht20 ?data]))
-
 (defmethod -event-msg-handler :chsk/state
   [{:keys [?data]}]
   (let [{:keys [open? _ever-opened? _csrf-token]} (second ?data)]

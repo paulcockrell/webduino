@@ -3,6 +3,12 @@
             [reagent.core :as ra]
             [myapp.frontend.layout.layout :as layout]))
 
+(defn icon []
+  (let [reading @(rf/subscribe [:arduino/led])
+        state (:state reading)]
+    [:div.heading-icon
+     [:span.material-symbols-outlined (if (= :high state) "lightbulb_circle" "radio_button_unchecked")]]))
+
 (defn led []
   ;; on mount
   (ra/with-let [_ (do
@@ -13,8 +19,7 @@
      [:<>
       [:section
        [:hgroup
-        [:div.heading-icon
-         [:span.material-symbols-outlined "lightbulb"]]
+        [icon]
         [:p "An LED is a small light. It can turn on, off, or change brightness to show messages or status."]
         [:p "Move the slider to change the brightness of the LED"]]]
 
