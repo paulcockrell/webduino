@@ -4,6 +4,10 @@
             [firmata.async :refer [topic-event-chan]]
             [myapp.backend.arduino.events :as events]))
 
+(def setup? (atom false))
+(def stop-poll (atom false))
+(def readings (atom nil))
+
 (defrecord DHT20Sensor [board addr])
 
 (defn make-dht20 [board]
@@ -49,18 +53,18 @@
   "Starts polling the sensor every N seconds. Returns a core.async channel streaming readings."
   [sensor interval-sec]
   (let [ch (async/chan)]
+    (reset! stop-poll false)
+
     (async/go-loop []
-      (when-let [reading (read! sensor)]
-        (println "Read:" reading)
-        (async/>! ch reading))
-      (<! (async/timeout (* interval-sec 1000)))
-      (recur))
+      (when-not @stop-poll
+        (when-let [reading (read! sensor)]
+          (println "Read:" reading)
+          (async/>! ch reading))
+        (<! (async/timeout (* interval-sec 1000)))
+        (recur)))
     ch))
 
 ;; --- System control
-
-(def setup? (atom false))
-(def readings (atom nil))
 
 (defn start-reporting! [board]
   (when-not @setup?
@@ -68,15 +72,18 @@
       (enable-i2c! sensor)
       (reset! readings (poll-every! sensor 1))
       (reset! setup? true)
+      (reset! stop-poll false)
       (async/go-loop []
         (when-let [r (async/<! @readings)]
           (events/broadcast-dht20-event r)
           (recur))))))
 
 (defn stop-reporting! [board]
+  (reset! stop-poll true)
   (i2c/send-i2c-request board 0x38 :stop-reading)
 
   (when-let [ch @readings]
     (println "Stoping DHT20Sensor reporting")
     (close! ch)
+    (reset! setup? false)
     (reset! readings nil)))

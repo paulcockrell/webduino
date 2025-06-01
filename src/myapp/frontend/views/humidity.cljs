@@ -1,12 +1,28 @@
 (ns myapp.frontend.views.humidity
-  (:require [myapp.frontend.layout.layout :as layout]))
+  (:require [re-frame.core :as rf]
+            [reagent.core :as ra]
+            [myapp.frontend.layout.layout :as layout]))
 
 (defn sensor-reading []
-  (let [status @(rf/subscribe [:sensor/dht20])]
+  (let [reading @(rf/subscribe [:arduino/dht20])
+        humidity (:humidity reading)]
     [:<>
      [:p.sensor-reading
-      [:span.sensor-reading-value (:humidity status)]
-      [:span.sensor-reading-units "%RHc"]]]))
+      [:span.sensor-reading-value (.toFixed humidity 2)]
+      [:span.sensor-reading-units "%RH"]]]))
+
+(defn sensor-chart []
+  [:div.chart
+   [:div.bar.h-40]
+   [:div.bar.h-40]
+   [:div.bar.h-70]
+   [:div.bar.h-10]
+   [:div.bar.h-50]
+   [:div.bar.h-40]
+   [:div.bar.h-70]
+   [:div.bar.h-10]
+   [:div.bar.h-50]
+   [:div.bar.h-90]])
 
 (defn humidity []
   ;; on mount
@@ -26,17 +42,7 @@
       [:section.sensor
        [:div.grid
         [sensor-reading]
-        [:div.chart
-         [:div.bar.h-40]
-         [:div.bar.h-40]
-         [:div.bar.h-70]
-         [:div.bar.h-10]
-         [:div.bar.h-50]
-         [:div.bar.h-40]
-         [:div.bar.h-70]
-         [:div.bar.h-10]
-         [:div.bar.h-50]
-         [:div.bar.h-90]]]]]]
+        [sensor-chart]]]]]
 
     ;; on un-mount
     (finally

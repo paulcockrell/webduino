@@ -4,14 +4,25 @@
             [myapp.frontend.layout.layout :as layout]))
 
 (defn sensor-reading []
-  (let [status @(rf/subscribe [:arduino/dht20])
-        temperature (get :temperature status)]
-    (println status)
-    (println temperature)
+  (let [reading @(rf/subscribe [:arduino/dht20])
+        temperature (:temperature reading)]
     [:<>
      [:p.sensor-reading
-      [:span.sensor-reading-value temperature]
+      [:span.sensor-reading-value (.toFixed temperature 2)]
       [:span.sensor-reading-units "°c"]]]))
+
+(defn sensor-chart []
+  [:div.chart
+   [:div.bar.h-40]
+   [:div.bar.h-40]
+   [:div.bar.h-70]
+   [:div.bar.h-10]
+   [:div.bar.h-50]
+   [:div.bar.h-40]
+   [:div.bar.h-70]
+   [:div.bar.h-10]
+   [:div.bar.h-50]
+   [:div.bar.h-90]])
 
 (defn temperature []
   ;; on mount
@@ -31,17 +42,7 @@
       [:section.sensor
        [:div.grid
         [sensor-reading]
-        [:div.chart
-         [:div.bar.h-40]
-         [:div.bar.h-40]
-         [:div.bar.h-70]
-         [:div.bar.h-10]
-         [:div.bar.h-50]
-         [:div.bar.h-40]
-         [:div.bar.h-70]
-         [:div.bar.h-10]
-         [:div.bar.h-50]
-         [:div.bar.h-90]]]]]]
+        [sensor-chart]]]]]
 
     ;; on un-mount
     (finally
