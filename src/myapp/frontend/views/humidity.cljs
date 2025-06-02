@@ -39,7 +39,7 @@
       [:section
        [:hgroup
         [:div.heading-icon
-         [:span.material-symbols-outlined "device_thermostat"]]
+         [:span.material-symbols-outlined "water_drop"]]
         [:div
          [:p "A humidity sensor measures how much moisture there is in the air. It turns humidity into numbers the computer can understand."]
          [:p "To change the value below, expose the sensor to more or less damp air"]]]]
