@@ -19,7 +19,7 @@
     [:<>
      [:p.sensor-reading
       [:span.sensor-reading-value (.toFixed humidity 1)]
-      [:span.sensor-reading-units "%RH"]]]))
+      [:span.sensor-reading-units "%"]]]))
 
 (defn sensor-chart []
   (let [reading @(rf/subscribe [:arduino/dht20])

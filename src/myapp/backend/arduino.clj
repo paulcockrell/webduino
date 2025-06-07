@@ -69,6 +69,11 @@
   (when @arduino-board_
     (dht20/stop-reporting! @arduino-board_)))
 
+(defn buzzer-buzz!
+  [buzzer-pin tone duration]
+  (when @arduino-board_
+    (buzzer/buzz! buzzer-pin tone duration)))
+
 (defn firmware
   "Get the firmware details from the board"
   []

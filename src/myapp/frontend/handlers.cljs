@@ -36,6 +36,10 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/dht20-event ?data]))
 
+(defmethod -event-msg-handler :arduino/buzzer-buzz
+  [{:keys [?data]}]
+  (rf/dispatch [:arduino/buzzer ?data]))
+
 (defmethod -event-msg-handler :chsk/state
   [{:keys [?data]}]
   (let [{:keys [open? _ever-opened? _csrf-token]} (second ?data)]

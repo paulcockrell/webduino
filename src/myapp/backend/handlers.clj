@@ -48,6 +48,12 @@
   (println "dht20-stop-reporting")
   (arduino/dht20-stop-reporting!))
 
+(defmethod -event-msg-handler :arduino/buzzer
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [buzzer-pin tone duration]} ?data]
+    (println "buzzer buzz tone=" tone " duration=" duration)
+    (arduino/buzzer-buzz! buzzer-pin tone duration)))
+
 (defmethod -event-msg-handler :arduino/get-firmware
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (let [info (arduino/firmware)]

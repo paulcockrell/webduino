@@ -1,4 +1,4 @@
-(ns myapp.backend.arduino.led
+(ns myapp.backend.arduino.buzzer
   (:require [firmata.core :as fm]
             [myapp.backend.arduino.events :as ev]))
 
@@ -33,3 +33,10 @@
 
 (defn update-frequency! [new-frequency]
   (reset! frequency (long new-frequency)))
+
+(defn buzz! [board buzzer-pin tone duration]
+  (when not @running?
+        (reset! running? true)
+        (fm/set-pin-mode @board buzzer-pin  :output)))
+
+

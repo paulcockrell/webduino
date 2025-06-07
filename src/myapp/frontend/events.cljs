@@ -178,3 +178,9 @@
  (fn [db [_ [_ raw-msg]]]
    (let [msg (js->clj raw-msg :keywordize-keys true)]
      (assoc-in db [:arduino :dht20] msg))))
+
+(rf/reg-event-fx
+ :arduino/buzzer-buzz
+ (fn [_ [_ {:keys [tone duration]}]]
+   (client/send! :arduino/buzzer {:buzzer-pin 3 :tone tone :duration duration})
+   {}))

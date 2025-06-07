@@ -4,6 +4,10 @@
 
 <https://github.com/DavidVujic/sente-with-reagent-and-re-frame/tree/master>
 
+Maybe take a look at this now archived project which extends firmata to allow for ultrasound and buzzers etc.
+We would need to extract this work and include with modern firmata
+[FirmataExpress](https://github.com/MrYsLab/FirmataExpress)
+
 ## Prerequisits
 
 1. Clojure / Java
