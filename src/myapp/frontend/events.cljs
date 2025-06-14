@@ -70,6 +70,12 @@
    {}))
 
 (rf/reg-event-fx
+ :arduino/led-update-state
+ (fn [_ [_ {:keys [state]}]]
+   (client/send! :arduino/led-update-state {:led-pin 10 :state state})
+   {}))
+
+(rf/reg-event-fx
  :arduino/led-start-blink
  (fn [_ [_ {:keys [freq]}]]
    (client/send! :arduino/led-start-blinking {:led-pin 10 :freq freq})

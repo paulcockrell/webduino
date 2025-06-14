@@ -33,3 +33,7 @@
 
 (defn update-frequency! [new-frequency]
   (reset! frequency (long new-frequency)))
+
+(defn update-state! [board led-pin state]
+  (let [led-state (if (= :high state) :low :high)] ;; invert state as the button reports high when depressed
+    (fm/set-digital @board led-pin led-state)))

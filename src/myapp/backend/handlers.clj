@@ -38,6 +38,12 @@
     (println "led-stop-blinking  led-pin=" led-pin)
     (arduino/led-stop-blinking! led-pin)))
 
+(defmethod -event-msg-handler :arduino/led-update-state
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [led-pin state]} ?data]
+    (println "led-update-state led-pin=" led-pin " state=" state)
+    (arduino/led-update-state! led-pin state)))
+
 (defmethod -event-msg-handler :arduino/dht20-start-reporting
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (println "dht20-start-reporting")
@@ -47,12 +53,6 @@
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (println "dht20-stop-reporting")
   (arduino/dht20-stop-reporting!))
-
-(defmethod -event-msg-handler :arduino/buzzer
-  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
-  (when-let [{:keys [buzzer-pin tone duration]} ?data]
-    (println "buzzer buzz tone=" tone " duration=" duration)
-    (arduino/buzzer-buzz! buzzer-pin tone duration)))
 
 (defmethod -event-msg-handler :arduino/get-firmware
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]

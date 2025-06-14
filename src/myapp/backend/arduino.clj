@@ -59,6 +59,11 @@
   (when @arduino-board_
     (led/stop-blinking! arduino-board_ led-pin)))
 
+(defn led-update-state!
+  [led-pin state]
+  (when @arduino-board_
+    (led/update-state! arduino-board_ led-pin state)))
+
 (defn dht20-start-reporting!
   []
   (when @arduino-board_
@@ -68,11 +73,6 @@
   []
   (when @arduino-board_
     (dht20/stop-reporting! @arduino-board_)))
-
-(defn buzzer-buzz!
-  [buzzer-pin tone duration]
-  (when @arduino-board_
-    (buzzer/buzz! buzzer-pin tone duration)))
 
 (defn firmware
   "Get the firmware details from the board"
@@ -113,12 +113,12 @@
   "As an example of server>user async pushes, setup a loop to broadcast an
   event to all connected users every 10 seconds"
   []
-  (let [btn-pin 4]
+  (let [btn-pin 7]
     (register-handler!
      :button-broadcast
      (fn [_board]
-       (register-button btn-pin) ;; register a button on pin 4
-       (register-event btn-pin   ;; register an event listener on pin 4
-                       (fn [event]
+       (register-button btn-pin) ;; register a button on pin
+       (register-event btn-pin   ;; register an event listener on pin
+                       (fn [event] ;; call back for when pressed/depressed
                          (println "Button press event" event)
                          (events/broadcast-button-event {:key :arduino/button-event :message event})))))))
