@@ -54,6 +54,18 @@
   (println "dht20-stop-reporting")
   (arduino/dht20-stop-reporting!))
 
+(defmethod -event-msg-handler :arduino/pir-start-detecting
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [pir-pin]} ?data]
+    (println "pir-detect pir-pin=" pir-pin)
+    (arduino/pir-start-detecting! pir-pin)))
+
+(defmethod -event-msg-handler :arduino/pir-stop-detecting
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [pir-pin]} ?data]
+    (println "pir-detect pir-pin=" pir-pin)
+    (arduino/pir-stop-detecting! pir-pin)))
+
 (defmethod -event-msg-handler :arduino/get-firmware
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (let [info (arduino/firmware)]

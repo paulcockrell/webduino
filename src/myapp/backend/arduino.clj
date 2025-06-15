@@ -6,6 +6,7 @@
             [myapp.backend.arduino.led :as led]
             [myapp.backend.arduino.servo :as servo]
             [myapp.backend.arduino.dht20 :as dht20]
+            [myapp.backend.arduino.pir :as pir]
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
@@ -73,6 +74,16 @@
   []
   (when @arduino-board_
     (dht20/stop-reporting! @arduino-board_)))
+
+(defn pir-start-detecting!
+  [pir-pin]
+  (when @arduino-board_
+    (pir/start-detecting! @arduino-board_ pir-pin)))
+
+(defn pir-stop-detecting!
+  [pir-pin]
+  (when @arduino-board_
+    (pir/stop-detecting! @arduino-board_ pir-pin)))
 
 (defn firmware
   "Get the firmware details from the board"

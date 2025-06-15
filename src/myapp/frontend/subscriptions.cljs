@@ -32,6 +32,11 @@
    (get-in db [:arduino :dht20])))
 
 (rf/reg-sub
+ :arduino/pir
+ (fn [db _]
+   (get-in db [:arduino :pir])))
+
+(rf/reg-sub
  :server/connection
  (fn [db _]
    (get-in db [:server :connection]))) ;; can be either :open :opening :closed :error

@@ -105,6 +105,18 @@
    (client/send! :arduino/dht20-stop-reporting {})
    {}))
 
+(rf/reg-event-fx
+ :arduino/pir-start-detecting
+ (fn [_ [_ _]]
+   (client/send! :arduino/pir-start-detecting {:pir-pin 2})
+   {}))
+
+(rf/reg-event-fx
+ :arduino/pir-stop-detecting
+ (fn [_ [_ _]]
+   (client/send! :arduino/pir-stop-detecting {:pir-pin 2})
+   {}))
+
 ;;---------- firmware callbacks
 
 ;; 1.
@@ -185,8 +197,17 @@
    (let [msg (js->clj raw-msg :keywordize-keys true)]
      (assoc-in db [:arduino :dht20] msg))))
 
+;;---------- PIR callbacks
+
+;; 1. - Receive message from server
 (rf/reg-event-fx
- :arduino/buzzer-buzz
- (fn [_ [_ {:keys [tone duration]}]]
-   (client/send! :arduino/buzzer {:buzzer-pin 3 :tone tone :duration duration})
-   {}))
+ :arduino/pir-event
+ (fn [_ value]
+   {:dispatch [:arduino/pir value]}))
+
+;; 2. - Update DB
+(rf/reg-event-db
+ :arduino/pir
+ (fn [db [_ [_ raw-msg]]]
+   (let [msg (js->clj raw-msg :keywordize-keys true)]
+     (assoc-in db [:arduino :pir] msg))))

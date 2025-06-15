@@ -36,9 +36,9 @@
   [{:keys [?data]}]
   (rf/dispatch [:arduino/dht20-event ?data]))
 
-(defmethod -event-msg-handler :arduino/buzzer-buzz
+(defmethod -event-msg-handler :arduino/pir-event
   [{:keys [?data]}]
-  (rf/dispatch [:arduino/buzzer ?data]))
+  (rf/dispatch [:arduino/pir-event ?data]))
 
 (defmethod -event-msg-handler :chsk/state
   [{:keys [?data]}]

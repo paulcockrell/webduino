@@ -12,3 +12,6 @@
 
 (defn broadcast-dht20-event [message]
   (socket/broadcast! {:key :arduino/dht20-event :message message}))
+
+(defn broadcast-pir-event [message]
+  (socket/broadcast! {:key :arduino/pir-event :message message}))
