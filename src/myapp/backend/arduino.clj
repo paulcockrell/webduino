@@ -78,12 +78,12 @@
 (defn pir-start-detecting!
   [pir-pin]
   (when @arduino-board_
-    (pir/start-detecting! @arduino-board_ pir-pin)))
+    (pir/start-detecting! arduino-board_ pir-pin)))
 
 (defn pir-stop-detecting!
   [pir-pin]
   (when @arduino-board_
-    (pir/stop-detecting! @arduino-board_ pir-pin)))
+    (pir/stop-detecting! arduino-board_ pir-pin)))
 
 (defn firmware
   "Get the firmware details from the board"

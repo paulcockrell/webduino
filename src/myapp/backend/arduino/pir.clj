@@ -9,6 +9,8 @@
 (defonce sensor-state (atom {:value :low :locked? false}))
 
 (defn on-event [message]
+  (log/info "PIR data=" message)
+
   ;; Assume raw is either :high or :low
   (when (and (= :high (:value message))
              (not (:locked? @sensor-state)))
@@ -26,15 +28,19 @@
 
 (defn start-detecting! [board pir-pin]
   (when (not @pin-setup?)
-    ;; (fm/enable-analog-in-reporting board pir-pin true)
-    ;; (fmr/on-analog-event board 0 #(on-event %))
-    (fm/set-pin-mode board pir-pin :input)
-    (fm/enable-digital-port-reporting board pir-pin true)
-    (fmr/on-digital-event board pir-pin #(on-event %))
-    (reset! pin-setup? true))
+    (log/info @board)
+    (-> @board
+        (fm/set-pin-mode pir-pin :input)
+        (fm/enable-digital-port-reporting pir-pin true))
 
-  (println "pir setup!"))
+    (Thread/sleep 1)
+
+    (fmr/on-digital-event @board pir-pin #(on-event %))
+
+    (reset! pin-setup? true)
+
+    (log/info "pir setup!")))
 
 (defn stop-detecting! [board pir-pin]
   (reset! pin-setup? false)
-  (fm/enable-digital-port-reporting board pir-pin false))
+  (fm/enable-digital-port-reporting @board pir-pin false))
