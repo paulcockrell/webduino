@@ -11,35 +11,30 @@
 (defn on-event [message]
   (log/info "PIR data=" message)
 
-  ;; Assume raw is either :high or :low
   (when (and (= :high (:value message))
              (not (:locked? @sensor-state)))
-    ;; This is a genuine motion edge
     (swap! sensor-state assoc :value :high :locked? true)
     (events/broadcast-pir-event :high)
     (log/info "Motion detected, state set to :high")
 
-    ;; Start cooldown reset timer
     (go
       (<! (timeout 2000))
       (swap! sensor-state assoc :value :low :locked? false)
       (events/broadcast-pir-event :low)
       (log/info "Sensor reset to :low, lock released"))))
 
+(defn setup [board pir-pin]
+  (fm/set-pin-mode @board pir-pin :input)
+  (fm/enable-digital-port-reporting @board pir-pin true)
+  (fmr/on-digital-event @board pir-pin #(on-event %)))
+
 (defn start-detecting! [board pir-pin]
   (when (not @pin-setup?)
-    (log/info @board)
-    (-> @board
-        (fm/set-pin-mode pir-pin :input)
-        (fm/enable-digital-port-reporting pir-pin true))
-
-    (Thread/sleep 1)
-
-    (fmr/on-digital-event @board pir-pin #(on-event %))
-
+    (setup board pir-pin)
     (reset! pin-setup? true)
+    (log/info "PIR setup"))
 
-    (log/info "pir setup!")))
+  (log/info "PIR ready"))
 
 (defn stop-detecting! [board pir-pin]
   (reset! pin-setup? false)
