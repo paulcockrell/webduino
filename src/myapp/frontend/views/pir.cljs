@@ -20,6 +20,7 @@
        [:hgroup
         [icon]
         [:p "A PIR (Passive Infrared) sensor detects motion by sensing changes in infrared radiation from warm objects, like people or animals, and is commonly used in security systems and automatic lighting."]
+        [:p [:strong "It can take around 60 seconds for the PIR to stabalize so be patient!"]]
         [:p "Move your hand infront of the PIR sensor and watch the LED turn on for 2 seconds"]]]]]
 
     ;; on un-mount

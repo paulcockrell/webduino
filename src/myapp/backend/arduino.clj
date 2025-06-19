@@ -7,6 +7,7 @@
             [myapp.backend.arduino.servo :as servo]
             [myapp.backend.arduino.dht20 :as dht20]
             [myapp.backend.arduino.pir :as pir]
+            [myapp.backend.arduino.buzzer :as buzzer]
             [clojure.string]))
 
 (defonce arduino-board_ (atom nil))
@@ -84,6 +85,18 @@
   [pir-pin]
   (when @arduino-board_
     (pir/stop-detecting! arduino-board_ pir-pin)))
+
+(defn buzzer-start!
+  "Register buzzer on pin and start buzzing"
+  [buzzer-pin]
+  (when @arduino-board_
+    (buzzer/buzzer-start! arduino-board_ buzzer-pin)))
+
+(defn buzzer-stop!
+  "Stop buzzer buzzing"
+  [buzzer-pin]
+  (when @arduino-board_
+    (buzzer/buzzer-stop! arduino-board_ buzzer-pin)))
 
 (defn firmware
   "Get the firmware details from the board"

@@ -117,6 +117,18 @@
    (client/send! :arduino/pir-stop-detecting {:pir-pin 2})
    {}))
 
+(rf/reg-event-fx
+ :arduino/buzzer-start
+ (fn [_ [_ _]]
+   (client/send! :arduino/buzzer-start {:buzzer-pin 3})
+   {}))
+
+(rf/reg-event-fx
+ :arduino/buzzer-stop
+ (fn [_ [_ _]]
+   (client/send! :arduino/buzzer-stop {:buzzer-pin 3})
+   {}))
+
 ;;---------- firmware callbacks
 
 ;; 1.

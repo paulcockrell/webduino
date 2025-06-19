@@ -66,6 +66,18 @@
     (println "pir-detect pir-pin=" pir-pin)
     (arduino/pir-stop-detecting! pir-pin)))
 
+(defmethod -event-msg-handler :arduino/buzzer-start
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [buzzer-pin]} ?data]
+    (println "buzzer-start buzzer-pin=" buzzer-pin)
+    (arduino/buzzer-start! buzzer-pin)))
+
+(defmethod -event-msg-handler :arduino/buzzer-stop
+  [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (when-let [{:keys [buzzer-pin]} ?data]
+    (println "buzzer-stop buzzer-pin=" buzzer-pin)
+    (arduino/buzzer-stop! buzzer-pin)))
+
 (defmethod -event-msg-handler :arduino/get-firmware
   [{:keys [event id ?data ring-req ?reply-fn send-fn]}]
   (let [info (arduino/firmware)]
