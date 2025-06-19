@@ -16,9 +16,22 @@
 (defn button []
   [:button
    {:on-click #(toggle-buzzer! %)}
-   (if @buzzing? "Stop" "Buzz!")])
+   (if @buzzing? "Stop" "Buzz")])
+
+(defn icon []
+  [:div.heading-icon
+   [:span.material-symbols-outlined "volume_up"]])
 
 (defn buzzer []
   [layout/layout
-   [:div [:h1 "Devices - Buzzer!?"]
-    [button]]])
+   [:<>
+    [:section
+     [:hgroup
+      [icon]
+      [:p "An electronic buzzer is a device that produces a buzzing sound, typically used as an alert or warning signal in electronic systems."]
+      [:p "Press the button to toggle the buzzer on and off"]]]
+
+    [:section
+     [:hgroup
+      [:p
+       [button]]]]]])

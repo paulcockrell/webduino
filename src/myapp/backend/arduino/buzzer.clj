@@ -8,6 +8,7 @@
 (defn- setup
   [board buzzer-pin]
   (fm/set-pin-mode @board buzzer-pin :pwm)
+  (Thread/sleep 100)
   (reset! setup? true))
 
 (defn buzzer-start!
